@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Träningspass</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background-color: white;
+      color: black;
+    }
+
+    nav {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 18px;
+      color: black;
+      padding: 0 10px;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: darkgray;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin-bottom: 15px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 15px;
+    }
+
+    form input, form button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    footer {
+      text-align: center;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Träningspass</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Hem</a>
+    <a href="traningsplaner.html">Träningsplaner</a>
+    <a href="trickinlarning.html">Trickinlärning</a>
+    <a href="monsterinlarning.html">Mönsterinlärning</a>
+  </nav>
+
+  <div class="container">
+    <h2>Dagens Checklista</h2>
+    <ul id="sessionChecklist"></ul>
+
+    <h2>Lägg till manuellt moment</h2>
+    <form id="manualTaskForm">
+      <input type="text" id="manualTask" placeholder="Beskriv träningsmomentet" required>
+      <button type="submit">Lägg till</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Paulina Widahl</p>
+  </footer>
+
+  <script>
+    // Hämta data från localStorage
+    const selectedDog = localStorage.getItem('selectedDog') || 'Work-a-lot Bim';
+    const tricksKey = `${selectedDog}_tricks`;
+    const patternsKey = `${selectedDog}_patternPlans`;
+    const manualTasksKey = `${selectedDog}_manualTasks`;
+
+    const tricks = JSON.parse(localStorage.getItem(tricksKey)) || [];
+    const patterns = JSON.parse(localStorage.getItem(patternsKey)) || [];
+    let manualTasks = JSON.parse(localStorage.getItem(manualTasksKey)) || [];
+
+    // Generera checklista
+    function generateChecklist() {
+      const checklist = document.getElementById('sessionChecklist');
+      checklist.innerHTML = '';
+
+      // Lägg till pågående trick
+      tricks.forEach((trick, index) => {
+        if (!trick.completed) {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
+            <label>
+              <input type="checkbox" onchange="markTrickCompleted(${index})">
+              Träna på trick: <strong>${trick.name}</strong>
+            </label>
+          `;
+          checklist.appendChild(listItem);
+        }
+      });
+
+      // Lägg till pågående mönster
+      patterns.forEach((pattern, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <label>
+            <input type="checkbox" onchange="markPatternCompleted(${index})">
+            Träna på mönster: <strong>${pattern.name}</strong>
+          </label>
+        `;
+        checklist.appendChild(listItem);
+      });
+
+      // Lägg till manuellt tillagda moment
+      manualTasks.forEach((task, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <label>
+            <input type="checkbox" onchange="removeManualTask(${index})">
+            ${task}
+          </label>
+        `;
+        checklist.appendChild(listItem);
+      });
+
+      // Om inget pågår
+      if (tricks.length === 0 && patterns.length === 0 && manualTasks.length === 0) {
+        checklist.innerHTML = '<li>Inget pågående att träna för tillfället.</li>';
+      }
+    }
+
+    // Markera trick som klart
+    function markTrickCompleted(index) {
+      tricks[index].completed = true;
+      localStorage.setItem(tricksKey, JSON.stringify(tricks));
+      generateChecklist();
+    }
+
+    // Markera mönster som klart
+    function markPatternCompleted(index) {
+      patterns.splice(index, 1); // Ta bort mönstret från listan
+      localStorage.setItem(patternsKey, JSON.stringify(patterns));
+      generateChecklist();
+    }
+
+    // Lägg till manuellt moment
+    document.getElementById('manualTaskForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const manualTask = document.getElementById('manualTask').value;
+      manualTasks.push(manualTask);
+      localStorage.setItem(manualTasksKey, JSON.stringify(manualTasks));
+      document.getElementById('manualTask').value = '';
+      generateChecklist();
+    });
+
+    // Ta bort manuellt moment
+    function removeManualTask(index) {
+      manualTasks.splice(index, 1);
+      localStorage.setItem(manualTasksKey, JSON.stringify(manualTasks));
+      generateChecklist();
+    }
+
+    // Initiera checklista
+    generateChecklist();
+  </script>
+</body>
+</html>

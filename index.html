@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Träningssystem</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background-color: #fddede;
+      color: black;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 18px;
+      color: black;
+      padding: 10px 15px;
+      border: 1px solid black;
+      border-radius: 5px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: black;
+      color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .summary-grid div {
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      text-align: left;
+    }
+
+    .summary-grid h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .summary-grid ul {
+      padding-left: 20px;
+    }
+
+    footer {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 768px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Träningssystem</h1>
+    <select id="dogSelector" onchange="switchDog(this.value)">
+      <option value="Work-a-lot Bim">Work-a-lot Bim</option>
+      <option value="Alickra’s look at Vespertilio">Alickra’s look at Vespertilio</option>
+    </select>
+  </header>
+
+  <nav>
+    <a href="traningsplaner.html">Träningsplaner</a>
+    <a href="trickinlarning.html">Trickinlärning</a>
+    <a href="monsterinlarning.html">Mönsterinlärning</a>
+    <a href="session.html">Session</a>
+    <a href="loggbok.html">Loggbok</a>
+  </nav>
+
+  <div class="container">
+    <h2>Sammanfattning</h2>
+    <div class="summary-grid">
+      <div>
+        <h3>Pågående Träningsplaner</h3>
+        <ul id="active-training-plans">
+          <li>Inga träningsplaner tillgängliga.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Pågående Mönster</h3>
+        <ul id="active-patterns">
+          <li>Inga mönster tillgängliga.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Färdiga Trick</h3>
+        <ul id="completed-tricks">
+          <li>Inga färdiga trick tillgängliga.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Paulina Widahl</p>
+  </footer>
+
+  <script>
+    if (typeof localStorage === 'undefined') {
+      alert('Din webbläsare stöder inte localStorage. Vissa funktioner kanske inte fungerar.');
+    }
+
+    const selectedDog = localStorage.getItem('selectedDog') || 'Work-a-lot Bim';
+    document.getElementById('dogSelector').value = selectedDog;
+
+    function switchDog(dogName) {
+      localStorage.setItem('selectedDog', dogName);
+      window.location.reload();
+    }
+
+    function loadSummary() {
+      const activePlans = JSON.parse(localStorage.getItem('activeTrainingPlans')) || [];
+      const activePatterns = JSON.parse(localStorage.getItem('activePatterns')) || [];
+      const completedTricks = JSON.parse(localStorage.getItem('completedTricks')) || [];
+
+      const trainingPlansList = document.getElementById('active-training-plans');
+      const patternsList = document.getElementById('active-patterns');
+      const tricksList = document.getElementById('completed-tricks');
+
+      trainingPlansList.innerHTML = activePlans.length
+        ? activePlans.map(plan => `<li>${plan}</li>`).join('')
+        : '<li>Inga träningsplaner tillgängliga.</li>';
+
+      patternsList.innerHTML = activePatterns.length
+        ? activePatterns.map(pattern => `<li>${pattern}</li>`).join('')
+        : '<li>Inga mönster tillgängliga.</li>';
+
+      tricksList.innerHTML = completedTricks.length
+        ? completedTricks.map(trick => `<li>${trick}</li>`).join('')
+        : '<li>Inga färdiga trick tillgängliga.</li>';
+    }
+
+    window.onload = loadSummary;
+  </script>
+</body>
+</html>
