@@ -24,6 +24,24 @@
         h1 {
             text-align: center;
             color: #333;
+            font-size: 1.5rem;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #007BFF;
+            color: white;
+        }
+
+        button:hover {
+            background: #0056b3;
         }
 
         table {
@@ -42,34 +60,21 @@
             background: #f4f4f4;
         }
 
-        input {
+        input, textarea {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
+            margin: 5px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
         }
 
         textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        button {
-            padding: 10px 15px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            resize: none;
         }
 
         .save-button {
             background: #28a745;
-            color: white;
         }
 
         .save-button:hover {
@@ -78,12 +83,55 @@
 
         .reset-button {
             background: #dc3545;
-            color: white;
-            margin-top: 10px;
         }
 
         .reset-button:hover {
             background: #c82333;
+        }
+
+        /* Mobilanpassning */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            input, textarea {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            button {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            input, textarea {
+                font-size: 0.8rem;
+                padding: 6px;
+            }
+
+            button {
+                font-size: 0.8rem;
+                padding: 6px;
+            }
         }
     </style>
 </head>
@@ -135,7 +183,6 @@
                 ],
                 notes: ""
             },
-            // Fler tillfällen kan definieras här
             2: {
                 title: "Tillfälle 2: Fördjupning",
                 schedule: [
