@@ -91,8 +91,12 @@
 
         /* Mobilanpassning */
         @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
             h1 {
-                font-size: 1.2rem;
+                font-size: 1.3rem;
             }
 
             table {
@@ -108,11 +112,15 @@
                 font-size: 0.9rem;
                 padding: 8px;
             }
+
+            th, td {
+                padding: 8px;
+            }
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 15px;
+                padding: 10px;
             }
 
             h1 {
@@ -131,6 +139,17 @@
             button {
                 font-size: 0.8rem;
                 padding: 6px;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+
+            /* Justera tabeller till mobilvy */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
         }
     </style>
@@ -185,17 +204,6 @@
             },
             2: {
                 title: "Tillfälle 2: Fördjupning",
-                schedule: [
-                    { time: "18:00–18:10", content: "Repetition och uppvärmning" },
-                    { time: "18:10–18:30", content: "Grundpositioner: Vänster sida och bakom" },
-                    { time: "18:30–18:50", content: "Trick: Slalom framåt och bakåt" },
-                    { time: "18:50–19:10", content: "Teori: Ordförståelse och timing" },
-                    { time: "19:10–19:30", content: "Avslut och hemläxa" }
-                ],
-                notes: ""
-            },
-            3: {
-                title: "Tillfälle 3: Fördjupning",
                 schedule: [
                     { time: "18:00–18:10", content: "Repetition och uppvärmning" },
                     { time: "18:10–18:30", content: "Grundpositioner: Vänster sida och bakom" },
