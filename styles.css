@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #FF7EB3, #8E44AD);
-    color: #fff;
+    background: #f5f5f5;
+    color: #333;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -17,26 +17,23 @@ body {
 .container {
     width: 90%;
     max-width: 600px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 25px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Rubrik */
 h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-bottom: 15px;
-    color: #fff;
-    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #333;
 }
 
-/* Text */
 p {
-    font-size: 1.2rem;
-    margin-bottom: 25px;
-    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #555;
 }
 
 /* Kursknappar */
@@ -51,31 +48,32 @@ p {
     text-decoration: none;
     font-size: 1rem;
     font-weight: bold;
-    padding: 15px 20px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #3498DB, #2ECC71);
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 10px 15px;
+    border-radius: 5px;
+    background: #e0e0e0;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     width: 100%;
-    max-width: 200px;
+    max-width: 180px;
     text-align: center;
 }
 
 .course-links a:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+    background: #d6d6d6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Footer */
 footer {
     margin-top: 20px;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: #777;
 }
 
 footer a {
-    color: #fff;
+    color: #555;
     text-decoration: none;
     font-weight: bold;
 }
@@ -87,15 +85,15 @@ footer a:hover {
 /* Responsiv design */
 @media (max-width: 768px) {
     h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .course-links a {
         max-width: 100%;
-        padding: 15px;
+        padding: 10px;
     }
 }
