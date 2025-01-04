@@ -58,8 +58,8 @@
 
         ul {
             list-style: none; /* Tar bort punkterna */
-            padding: 0; /* Tar bort standard inriktning */
-            margin: 0; /* Tar bort standard marginaler */
+            padding: 0;
+            margin: 0;
         }
     </style>
 </head>
@@ -91,30 +91,50 @@
     </div>
 
     <script>
+        // Standarddata för tillfällen
         const defaultSessions = {
-            // Data för tillfällen
+            1: {
+                title: "Tillfälle 1: Introduktion",
+                schedule: [
+                    { time: "18.00–18.10", content: "Introduktion och repetition" },
+                    { time: "18.10–18.40", content: "Avancerade positioner" },
+                    { time: "18.40–19.00", content: "Timing och precision" }
+                ],
+                notes: ""
+            },
+            2: {
+                title: "Tillfälle 2: Programutveckling",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition av tidigare moment" },
+                    { time: "18.10–18.40", content: "Positioner i rörelse" },
+                    { time: "18.40–19.00", content: "Bygga kedjor" }
+                ],
+                notes: ""
+            }
         };
 
         let sessions = JSON.parse(JSON.stringify(defaultSessions));
 
+        // Hämta session-id baserat på titel
         function getSessionIdByTitle() {
             return Object.keys(sessions).find(
                 key => sessions[key].title === document.getElementById("session-title").innerText
             );
         }
 
-        function showSession(sessionId, reset = false) {
-            if (reset) sessions[sessionId] = JSON.parse(JSON.stringify(defaultSessions[sessionId]));
+        // Visa tillfälle
+        function showSession(sessionId) {
             const session = sessions[sessionId];
             document.getElementById("session-title").innerText = session.title;
 
             const scheduleList = document.getElementById("schedule-list");
             scheduleList.innerHTML = session.schedule
-                .map((item, index) =>
-                    `<li>
-                        <strong>${item.time}</strong>
-                        <textarea onchange="updateContent(${sessionId}, ${index}, this.value)">${item.content}</textarea>
-                    </li>`
+                .map(
+                    (item, index) =>
+                        `<li>
+                            <strong>${item.time}</strong>
+                            <textarea onchange="updateContent(${sessionId}, ${index}, this.value)">${item.content}</textarea>
+                        </li>`
                 )
                 .join("");
 
@@ -122,23 +142,22 @@
             document.getElementById("session-details").style.display = "block";
         }
 
+        // Uppdatera innehåll
         function updateContent(sessionId, index, value) {
             sessions[sessionId].schedule[index].content = value;
         }
 
+        // Spara anteckningar
         function saveSession() {
             const sessionId = getSessionIdByTitle();
             sessions[sessionId].notes = document.getElementById("session-notes").value;
             alert("Ändringar sparade!");
         }
 
+        // Återställ till ursprung
         function resetSession() {
             if (confirm("Vill du verkligen återställa till ursprungligt innehåll?")) {
                 const sessionId = getSessionIdByTitle();
-                showSession(sessionId, true);
-                alert("Tillfället har återställts till ursprungligt innehåll.");
-            }
-        }
-    </script>
-</body>
+                sessions[sessionId] = JSON.parse</body>
 </html>
+```
