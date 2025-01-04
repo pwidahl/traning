@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Nybörjarkurs</h1>
-        <p>Klicka på ett tillfälle för att se detaljer eller justera innehållet:</p>
+        <p>Klicka på ett tillfälle för att se och justera tidsplanen:</p>
         
         <div class="course-links">
             <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
@@ -21,13 +21,14 @@
         
         <div id="session-details" class="session-details" style="margin-top: 20px; display: none;">
             <h2 id="session-title"></h2>
-            <div>
-                <textarea id="session-description" rows="10" style="width: 100%;"></textarea>
-                <button onclick="saveSession()">Spara ändringar</button>
+            <div id="schedule-container">
+                <h3>Tidsplan</h3>
+                <ul id="schedule-list"></ul>
+                <button onclick="addScheduleItem()">Lägg till ny del</button>
             </div>
             <h3>Anteckningar:</h3>
             <textarea id="session-notes" rows="5" style="width: 100%;" placeholder="Lägg till anteckningar här..."></textarea>
-            <button onclick="saveNotes()">Spara anteckningar</button>
+            <button onclick="saveSession()">Spara ändringar</button>
         </div>
     </div>
     
@@ -36,74 +37,28 @@
     </footer>
 
     <script>
-        // Kontrollera om sessionsdata och anteckningar finns i LocalStorage
+        // Kontrollera om data redan finns i LocalStorage
         const sessions = JSON.parse(localStorage.getItem('sessions')) || {
             1: {
                 title: "Tillfälle 1: Introduktion och grunder",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Introduktion</li>
-                        <li>18.10–18.40: Grundpositioner (Front, höger sida)</li>
-                        <li>18.40–19.00: Trick: Snurra höger/vänster</li>
-                        <li>19.00–19.20: Teori: Shaping och belöningsplacering</li>
-                        <li>19.20–19.30: Avslutning och hemläxa</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Träna in Front och höger sida samt snurra höger/vänster.
-                `,
+                schedule: [
+                    { time: "18.00–18.10", content: "Introduktion" },
+                    { time: "18.10–18.40", content: "Grundpositioner (Front, höger sida)" },
+                    { time: "18.40–19.00", content: "Trick: Snurra höger/vänster" },
+                    { time: "19.00–19.20", content: "Teori: Shaping och belöningsplacering" },
+                    { time: "19.20–19.30", content: "Avslutning och hemläxa" }
+                ],
                 notes: ""
             },
             2: {
                 title: "Tillfälle 2: Fördjupning av positioner och rörelse",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning och repetition</li>
-                        <li>18.10–18.30: Grundpositioner: Vänster sida, bakom</li>
-                        <li>18.30–18.50: Trick: Slalom framåt/bakåt</li>
-                        <li>18.50–19.10: Teori: Ordförståelse och muskelminne</li>
-                        <li>19.10–19.30: Avslutning och hemläxa</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Träna slalom och positionerna vänster sida och bakom.
-                `,
-                notes: ""
-            },
-            3: {
-                title: "Tillfälle 3: Bygga komplexitet",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning och repetition</li>
-                        <li>18.10–18.30: Trick: Backa</li>
-                        <li>18.30–18.50: Trick: Sitt fint och buga</li>
-                        <li>18.50–19.10: Kombinera positioner och trick</li>
-                        <li>19.10–19.30: Teori och avslutning</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Träna korta sekvenser med kombinationer av positioner och trick.
-                `,
-                notes: ""
-            },
-            4: {
-                title: "Tillfälle 4: Sätta samman rörelser och program",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning och repetition</li>
-                        <li>18.10–18.40: Kedja rörelser</li>
-                        <li>18.40–19.10: Förbered program</li>
-                        <li>19.10–19.30: Teori och feedback</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Sätt ihop en sekvens på 30-45 sekunder till musik.
-                `,
-                notes: ""
-            },
-            5: {
-                title: "Tillfälle 5: Uppvisning och avslutning",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning och repetition</li>
-                        <li>18.10–19.00: Varje ekipage visar sitt program</li>
-                        <li>19.00–19.20: Reflektion och feedback</li>
-                        <li>19.20–19.30: Avslutning och gruppfoto</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Reflektera över kursen och planera vidare träning.
-                `,
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
+                    { time: "18.10–18.30", content: "Grundpositioner: Vänster sida, bakom" },
+                    { time: "18.30–18.50", content: "Trick: Slalom framåt/bakåt" },
+                    { time: "18.50–19.10", content: "Teori: Ordförståelse och muskelminne" },
+                    { time: "19.10–19.30", content: "Avslutning och hemläxa" }
+                ],
                 notes: ""
             }
         };
@@ -117,28 +72,61 @@
         function showSession(sessionId) {
             const session = sessions[sessionId];
             document.getElementById("session-title").innerText = session.title;
-            document.getElementById("session-description").value = session.description;
             document.getElementById("session-notes").value = session.notes || "";
-            document.getElementById("session-details").style.display = "block";
             document.getElementById("session-details").dataset.currentSessionId = sessionId;
+            updateSchedule(sessionId);
+            document.getElementById("session-details").style.display = "block";
         }
 
-        // Spara ändringar för session
-        function saveSession() {
-            const sessionId = document.getElementById("session-details").dataset.currentSessionId;
-            const updatedDescription = document.getElementById("session-description").value;
-            sessions[sessionId].description = updatedDescription;
+        // Uppdatera tidsplanen
+        function updateSchedule(sessionId) {
+            const scheduleList = document.getElementById("schedule-list");
+            scheduleList.innerHTML = ""; // Rensa tidigare lista
+            const schedule = sessions[sessionId].schedule;
+
+            schedule.forEach((item, index) => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <div>
+                        <input type="text" value="${item.time}" placeholder="Tid (ex. 18.00–18.10)" 
+                            onchange="updateScheduleItem(${sessionId}, ${index}, 'time', this.value)" />
+                        <input type="text" value="${item.content}" placeholder="Innehåll" 
+                            onchange="updateScheduleItem(${sessionId}, ${index}, 'content', this.value)" />
+                        <button onclick="removeScheduleItem(${sessionId}, ${index})">Ta bort</button>
+                    </div>
+                `;
+                scheduleList.appendChild(li);
+            });
+        }
+
+        // Uppdatera en tidsplanpost
+        function updateScheduleItem(sessionId, index, key, value) {
+            sessions[sessionId].schedule[index][key] = value;
             saveToLocalStorage();
-            alert("Ändringar sparade!");
         }
 
-        // Spara anteckningar
-        function saveNotes() {
+        // Lägg till ny post i tidsplan
+        function addScheduleItem() {
+            const sessionId = document.getElementById("session-details").dataset.currentSessionId;
+            sessions[sessionId].schedule.push({ time: "", content: "" });
+            updateSchedule(sessionId);
+            saveToLocalStorage();
+        }
+
+        // Ta bort en post från tidsplanen
+        function removeScheduleItem(sessionId, index) {
+            sessions[sessionId].schedule.splice(index, 1);
+            updateSchedule(sessionId);
+            saveToLocalStorage();
+        }
+
+        // Spara session (anteckningar och tidsplan)
+        function saveSession() {
             const sessionId = document.getElementById("session-details").dataset.currentSessionId;
             const updatedNotes = document.getElementById("session-notes").value;
             sessions[sessionId].notes = updatedNotes;
             saveToLocalStorage();
-            alert("Anteckningar sparade!");
+            alert("Ändringar och anteckningar sparade!");
         }
     </script>
 </body>
