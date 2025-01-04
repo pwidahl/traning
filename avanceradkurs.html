@@ -3,313 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avancerad kurs</title>
+    <title>Avsncerad kurs</title>
     <style>
-/* Grundläggande layout */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f9f9f9;
-    color: #333;
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+        }
 
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-/* Rubriker */
-h1, h2, h3 {
-    text-align: center;
-    color: #444;
-}
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 1.5rem;
+        }
 
-h1 {
-    margin-bottom: 20px;
-}
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #007BFF;
+            color: white;
+        }
 
-h2, h3 {
-    margin-top: 20px;
-    font-size: 1.5rem;
-}
+        button:hover {
+            background: #0056b3;
+        }
 
-/* Text */
-p {
-    text-align: center;
-    color: #666;
-    font-size: 1rem;
-    margin: 0 0 20px 0;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-/* Knappdesign */
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 10px 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
 
-.back-button {
-    background: #e0e0e0;
-    color: #333;
-    border: 1px solid #bdbdbd;
-}
+        th {
+            background: #f4f4f4;
+            font-weight: bold;
+        }
 
-.back-button:hover {
-    background: #bdbdbd;
-    color: #000;
-}
+        td input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-.home-button {
-    background: #f4f4f4;
-    color: #333;
-    border: 1px solid #ccc;
-}
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
 
-.home-button:hover {
-    background: #e0e0e0;
-    color: #000;
-}
+        .save-button {
+            background: #28a745;
+        }
 
-.save-button {
-    background: #28a745;
-    color: white;
-    border: none;
-}
+        .save-button:hover {
+            background: #218838;
+        }
 
-.save-button:hover {
-    background: #218838;
-}
+        .reset-button {
+            background: #dc3545;
+        }
 
-.reset-button {
-    background: #dc3545;
-    color: white;
-    border: none;
-}
+        .reset-button:hover {
+            background: #c82333;
+        }
 
-.reset-button:hover {
-    background: #c82333;
-}
+        /* Mobilanpassning */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
 
-/* Länkar till kurstillfällen */
-.course-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
+            h1 {
+                font-size: 1.3rem;
+            }
 
-.course-links a {
-    display: inline-block;
-    text-align: center;
-    background: #6c63ff;
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: background 0.3s;
-}
+            table {
+                font-size: 0.9rem;
+            }
 
-.course-links a:hover {
-    background: #5547c8;
-}
+            td input, textarea {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
 
-/* Tidsplan */
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+            button {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
 
-ul li {
-    background: #f4f4f4;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
 
-ul li strong {
-    font-size: 1rem;
-    color: #444;
-    display: block;
-}
+            h1 {
+                font-size: 1rem;
+            }
 
-/* Textarea */
-textarea {
-    width: 100%;
-    margin-top: 5px;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    resize: vertical;
-}
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
 
-/* Mobilanpassning */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
+            td input, textarea {
+                font-size: 0.8rem;
+                padding: 6px;
+            }
 
-    h1 {
-        font-size: 1.8rem;
-    }
+            button {
+                font-size: 0.8rem;
+                padding: 6px;
+            }
 
-    h2, h3 {
-        font-size: 1.4rem;
-    }
-
-    p {
-        font-size: 0.95rem;
-    }
-
-    .course-links a {
-        font-size: 0.9rem;
-        padding: 8px 12px;
-    }
-
-    ul li {
-        padding: 10px;
-        gap: 8px;
-    }
-
-    textarea {
-        font-size: 0.9rem;
-    }
-
-    .button {
-        font-size: 0.9rem;
-        padding: 8px 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    h2, h3 {
-        font-size: 1.3rem;
-    }
-
-    p {
-        font-size: 0.9rem;
-    }
-
-    .course-links a {
-        font-size: 0.85rem;
-        padding: 6px 10px;
-    }
-
-    ul li {
-        padding: 8px;
-        gap: 6px;
-    }
-
-    textarea {
-        font-size: 0.85rem;
-    }
-
-    .button {
-        font-size: 0.85rem;
-        padding: 6px 10px;
-    }
-}
+            th, td {
+                padding: 6px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Navigeringsknappar -->
-        <a href="index.html" class="button home-button">Hem</a>
-
         <h1>Avancerad kurs</h1>
-        <p>Klicka på ett tillfälle för att redigera innehållet:</p>
+        <p>Klicka på ett tillfälle för att redigera kursplanen:</p>
 
-        <div class="course-links">
-            <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
-            <a href="#session2" onclick="showSession(2)">Tillfälle 2</a>
-            <a href="#session3" onclick="showSession(3)">Tillfälle 3</a>
-            <a href="#session4" onclick="showSession(4)">Tillfälle 4</a>
-            <a href="#session5" onclick="showSession(5)">Tillfälle 5</a>
+        <div>
+            <button onclick="showSession(1)">Tillfälle 1</button>
+            <button onclick="showSession(2)">Tillfälle 2</button>
+            <button onclick="showSession(3)">Tillfälle 3</button>
+            <button onclick="showSession(4)">Tillfälle 4</button>
+            <button onclick="showSession(5)">Tillfälle 5</button>
         </div>
 
-        <div id="session-details" class="session-details" style="display: none;">
+        <div id="session-details" style="display: none; margin-top: 20px;">
             <h2 id="session-title"></h2>
-            <h3>Tidsplan</h3>
-            <ul id="schedule-list"></ul>
+            <h3>Tidsplan:</h3>
+            <table id="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Tid</th>
+                        <th>Innehåll</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <button class="save-button" onclick="addRow()">Lägg till rad</button>
+
             <h3>Anteckningar:</h3>
-            <textarea id="session-notes" rows="5" placeholder="Lägg till anteckningar här..."></textarea>
-            <button class="button save-button" onclick="saveSession()">Spara ändringar</button>
-            <button class="button reset-button" onclick="resetSession()">Återställ till ursprung</button>
+            <textarea id="session-notes" rows="5" placeholder="Skriv anteckningar här..."></textarea>
+            <button class="save-button" onclick="saveSession()">Spara</button>
+            <button class="reset-button" onclick="resetSession()">Återställ till ursprung</button>
         </div>
     </div>
 
     <script>
-        // Standarddata för tillfällen
         const defaultSessions = {
             1: {
-                title: "Tillfälle 1: Introduktion",
+                title: "Tillfälle 1: Introduktion och grunder",
                 schedule: [
-                    { time: "18.00–18.10", content: "Introduktion och repetition" },
-                    { time: "18.10–18.40", content: "Avancerade positioner" },
-                    { time: "18.40–19.00", content: "Timing och precision" }
+                    { time: "18:00–18:10", content: "Introduktion" },
+                    { time: "18:10–18:30", content: "Grundpositioner: Front, höger sida" },
+                    { time: "18:30–18:50", content: "Trick: Snurra höger och vänster" },
+                    { time: "18:50–19:10", content: "Teori: Shaping och belöningsplacering" },
+                    { time: "19:10–19:30", content: "Frågor och hemläxa" }
                 ],
                 notes: ""
             },
             2: {
-                title: "Tillfälle 2: Programutveckling",
+                title: "Tillfälle 2: Fördjupning",
                 schedule: [
-                    { time: "18.00–18.10", content: "Repetition av tidigare moment" },
-                    { time: "18.10–18.40", content: "Positioner i rörelse" },
-                    { time: "18.40–19.00", content: "Bygga kedjor" }
+                    { time: "18:00–18:10", content: "Repetition och uppvärmning" },
+                    { time: "18:10–18:30", content: "Grundpositioner: Vänster sida och bakom" },
+                    { time: "18:30–18:50", content: "Trick: Slalom framåt och bakåt" },
+                    { time: "18:50–19:10", content: "Teori: Ordförståelse och timing" },
+                    { time: "19:10–19:30", content: "Avslut och hemläxa" }
                 ],
                 notes: ""
             },
             3: {
-                title: "Tillfälle 3: Förfining och detaljer",
+                title: "Tillfälle 3: Fördjupning",
                 schedule: [
-                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
-                    { time: "18.10–18.40", content: "Förfining av rörelser och tajming" },
-                    { time: "18.40–19.00", content: "Lägga till detaljer i trick" }
+                    { time: "18:00–18:10", content: "Repetition och uppvärmning" },
+                    { time: "18:10–18:30", content: "Grundpositioner: Vänster sida och bakom" },
+                    { time: "18:30–18:50", content: "Trick: Slalom framåt och bakåt" },
+                    { time: "18:50–19:10", content: "Teori: Ordförståelse och timing" },
+                    { time: "19:10–19:30", content: "Avslut och hemläxa" }
                 ],
                 notes: ""
             },
             4: {
-                title: "Tillfälle 4: Programkörning och analys",
+                title: "Tillfälle 4: Fördjupning",
                 schedule: [
-                    { time: "18.00–18.10", content: "Repetition av tidigare moment" },
-                    { time: "18.10–18.40", content: "Körning av programdelar" },
-                    { time: "18.40–19.00", content: "Feedback på program" }
+                    { time: "18:00–18:10", content: "Repetition och uppvärmning" },
+                    { time: "18:10–18:30", content: "Grundpositioner: Vänster sida och bakom" },
+                    { time: "18:30–18:50", content: "Trick: Slalom framåt och bakåt" },
+                    { time: "18:50–19:10", content: "Teori: Ordförståelse och timing" },
+                    { time: "19:10–19:30", content: "Avslut och hemläxa" }
                 ],
                 notes: ""
             },
             5: {
-                title: "Tillfälle 5: Uppvisning och avslutning",
+                title: "Tillfälle 5: Fördjupning",
                 schedule: [
-                    { time: "18.00–18.10", content: "Uppvärmning och förberedelse" },
-                    { time: "18.10–19.00", content: "Uppvisning av program" },
-                    { time: "19.00–19.20", content: "Reflektion och feedback" }
+                    { time: "18:00–18:10", content: "Repetition och uppvärmning" },
+                    { time: "18:10–18:30", content: "Grundpositioner: Vänster sida och bakom" },
+                    { time: "18:30–18:50", content: "Trick: Slalom framåt och bakåt" },
+                    { time: "18:50–19:10", content: "Teori: Ordförståelse och timing" },
+                    { time: "19:10–19:30", content: "Avslut och hemläxa" }
                 ],
                 notes: ""
             }
@@ -317,52 +246,55 @@ textarea {
 
         let sessions = JSON.parse(JSON.stringify(defaultSessions));
 
-        // Hämta session-id baserat på titel
-        function getSessionIdByTitle() {
-            return Object.keys(sessions).find(
-                key => sessions[key].title === document.getElementById("session-title").innerText
-            );
-        }
-
-        // Visa tillfälle
         function showSession(sessionId) {
             const session = sessions[sessionId];
             document.getElementById("session-title").innerText = session.title;
-
-            const scheduleList = document.getElementById("schedule-list");
-            scheduleList.innerHTML = session.schedule
-                .map(
-                    (item, index) =>
-                        `<li>
-                            <strong>${item.time}</strong>
-                            <textarea onchange="updateContent(${sessionId}, ${index}, this.value)">${item.content}</textarea>
-                        </li>`
-                )
-                .join("");
-
             document.getElementById("session-notes").value = session.notes;
+
+            const tableBody = document.getElementById("schedule-table").querySelector("tbody");
+            tableBody.innerHTML = "";
+
+            session.schedule.forEach((item, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td><input type="text" value="${item.time}" onchange="updateTime(${sessionId}, ${index}, this.value)"></td>
+                    <td><input type="text" value="${item.content}" onchange="updateContent(${sessionId}, ${index}, this.value)"></td>
+                `;
+                tableBody.appendChild(row);
+            });
+
             document.getElementById("session-details").style.display = "block";
         }
 
-        // Uppdatera innehåll
+        function updateTime(sessionId, index, value) {
+            sessions[sessionId].schedule[index].time = value;
+        }
+
         function updateContent(sessionId, index, value) {
             sessions[sessionId].schedule[index].content = value;
         }
 
-        // Spara anteckningar
+        function addRow() {
+            const sessionId = Object.keys(defaultSessions).find(
+                id => defaultSessions[id].title === document.getElementById("session-title").innerText
+            );
+            sessions[sessionId].schedule.push({ time: "", content: "" });
+            showSession(sessionId);
+        }
+
         function saveSession() {
-            const sessionId = getSessionIdByTitle();
+            const sessionId = Object.keys(defaultSessions).find(
+                id => defaultSessions[id].title === document.getElementById("session-title").innerText
+            );
             sessions[sessionId].notes = document.getElementById("session-notes").value;
             alert("Ändringar sparade!");
         }
 
-        // Återställ till ursprung
         function resetSession() {
-            if (confirm("Vill du verkligen återställa till ursprungligt innehåll?")) {
-                const sessionId = getSessionIdByTitle();
-                sessions[sessionId] = JSON.parse(JSON.stringify(defaultSessions[sessionId]));
-                showSession(sessionId); // Ladda om tillfället med ursprungliga data
-                alert("Tillfället har återställts till ursprungligt innehåll.");
+            if (confirm("Vill du återställa till ursprungligt innehåll?")) {
+                sessions = JSON.parse(JSON.stringify(defaultSessions));
+                alert("Tillfället har återställts!");
+                location.reload();
             }
         }
     </script>
