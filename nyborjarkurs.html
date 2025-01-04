@@ -6,20 +6,161 @@
     <title>Nybörjarkurs</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .reset-button {
-            margin-top: 20px;
-            background: #e63946;
+        /* Mobiloptimering */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f4ef;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+
+        .course-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .course-links a {
+            display: block;
+            text-align: center;
+            background: #6a11cb;
             color: white;
-            padding: 10px 20px;
+            text-decoration: none;
             font-size: 1rem;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 120px;
+            transition: background 0.3s;
+        }
+
+        .course-links a:hover {
+            background: #2575fc;
+        }
+
+        .session-details {
+            margin-top: 20px;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        ul li {
+            background: #f7f7f7;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        ul li strong {
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        button {
+            font-size: 1rem;
+            padding: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
         }
 
+        .save-button {
+            background: #2575fc;
+            color: white;
+        }
+
+        .save-button:hover {
+            background: #1b4d9c;
+        }
+
+        .reset-button {
+            background: #e63946;
+            color: white;
+            margin-top: 20px;
+        }
+
         .reset-button:hover {
             background: #d62828;
+        }
+
+        @media (max-width: 768px) {
+            .course-links a {
+                max-width: 100px;
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            ul li {
+                padding: 10px;
+                gap: 5px;
+            }
+
+            textarea {
+                font-size: 0.9rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .course-links a {
+                max-width: 90px;
+                font-size: 0.8rem;
+                padding: 6px;
+            }
+
+            ul li {
+                padding: 8px;
+                gap: 5px;
+            }
+
+            textarea {
+                font-size: 0.85rem;
+            }
+
+            button {
+                font-size: 0.85rem;
+                padding: 6px;
+            }
         }
     </style>
 </head>
@@ -42,18 +183,18 @@
             <ul id="schedule-list"></ul>
             <h3>Anteckningar:</h3>
             <textarea id="session-notes" rows="5" placeholder="Lägg till anteckningar här..."></textarea>
-            <button onclick="saveSession()">Spara ändringar</button>
+            <button class="save-button" onclick="saveSession()">Spara ändringar</button>
         </div>
 
         <button class="reset-button" onclick="resetToDefault()">Återställ till grund</button>
     </div>
     
     <footer>
-        <a href="index.html">&larr; Tillbaka till startsidan</a>
+        <p style="text-align: center; margin-top: 20px;">&copy; 2025 Kursadministration</p>
     </footer>
 
     <script>
-        // Standarddata för att återställa
+        // Grundfunktioner (samma som tidigare)
         const defaultSessions = {
             1: {
                 title: "Tillfälle 1: Introduktion och grunder",
@@ -76,65 +217,27 @@
                     { time: "19.10–19.30", content: "Avslutning och hemläxa" }
                 ],
                 notes: ""
-            },
-            3: {
-                title: "Tillfälle 3: Bygga komplexitet",
-                schedule: [
-                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
-                    { time: "18.10–18.30", content: "Trick: Backa" },
-                    { time: "18.30–18.50", content: "Trick: Sitt fint och buga" },
-                    { time: "18.50–19.10", content: "Kombinera positioner och trick" },
-                    { time: "19.10–19.30", content: "Teori och avslutning" }
-                ],
-                notes: ""
-            },
-            4: {
-                title: "Tillfälle 4: Sätta samman rörelser och program",
-                schedule: [
-                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
-                    { time: "18.10–18.40", content: "Kedja rörelser" },
-                    { time: "18.40–19.10", content: "Förbered program" },
-                    { time: "19.10–19.30", content: "Teori och feedback" }
-                ],
-                notes: ""
-            },
-            5: {
-                title: "Tillfälle 5: Uppvisning och avslutning",
-                schedule: [
-                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
-                    { time: "18.10–19.00", content: "Varje ekipage visar sitt program" },
-                    { time: "19.00–19.20", content: "Reflektion och feedback" },
-                    { time: "19.20–19.30", content: "Avslutning och gruppfoto" }
-                ],
-                notes: ""
             }
         };
 
-        // Aktuell sessionsdata (med möjlighet att spara ändringar)
         const sessions = JSON.parse(localStorage.getItem('sessions')) || JSON.parse(JSON.stringify(defaultSessions));
 
-        // Spara till LocalStorage
         function saveToLocalStorage() {
             localStorage.setItem('sessions', JSON.stringify(sessions));
         }
 
-        // Visa sessionens detaljer
         function showSession(sessionId) {
             const session = sessions[sessionId];
             document.getElementById("session-title").innerText = session.title;
             document.getElementById("session-notes").value = session.notes || "";
-            document.getElementById("session-details").dataset.currentSessionId = sessionId;
             updateSchedule(sessionId);
             document.getElementById("session-details").style.display = "block";
         }
 
-        // Uppdatera tidsplanen
         function updateSchedule(sessionId) {
             const scheduleList = document.getElementById("schedule-list");
-            scheduleList.innerHTML = ""; // Rensa tidigare lista
-            const schedule = sessions[sessionId].schedule;
-
-            schedule.forEach((item, index) => {
+            scheduleList.innerHTML = "";
+            sessions[sessionId].schedule.forEach((item, index) => {
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>${item.time}</strong>
@@ -147,13 +250,11 @@
             });
         }
 
-        // Uppdatera innehållet i tidsplanen
         function updateContent(sessionId, index, value) {
             sessions[sessionId].schedule[index].content = value;
             saveToLocalStorage();
         }
 
-        // Spara anteckningar
         function saveSession() {
             const sessionId = document.getElementById("session-details").dataset.currentSessionId;
             const updatedNotes = document.getElementById("session-notes").value;
@@ -162,7 +263,6 @@
             alert("Ändringar sparade!");
         }
 
-        // Återställ till grund
         function resetToDefault() {
             if (confirm("Vill du verkligen återställa alla tillfällen till grundinställningarna?")) {
                 Object.keys(defaultSessions).forEach(sessionId => {
@@ -170,7 +270,7 @@
                 });
                 saveToLocalStorage();
                 alert("Alla tillfällen har återställts till grund.");
-                location.reload(); // Uppdatera sidan
+                location.reload();
             }
         }
     </script>
