@@ -4,44 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: auto;
+            margin: 0;
+            padding: 0;
             background: #f9f9f9;
-            color: #333;
-        }
-
-        h1, h2 {
-            text-align: center;
-            color: #444;
         }
 
         .container {
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .form-group {
-            margin-bottom: 15px;
+        h1, h2 {
+            text-align: center;
+            color: #333;
         }
 
         label {
             font-weight: bold;
+            margin-top: 10px;
             display: block;
-            margin-bottom: 5px;
         }
 
-        input, textarea, select, button {
+        input, select, textarea, button {
             width: 100%;
             padding: 10px;
-            margin: 5px 0;
+            margin-top: 5px;
+            margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
@@ -50,29 +45,12 @@
         button {
             background: #28a745;
             color: white;
+            border: none;
             cursor: pointer;
-            transition: background 0.3s ease;
         }
 
         button:hover {
             background: #218838;
-        }
-
-        .export-button {
-            background: #007bff;
-        }
-
-        .export-button:hover {
-            background: #0056b3;
-        }
-
-        .delete-button {
-            background: #dc3545;
-            color: white;
-        }
-
-        .delete-button:hover {
-            background: #c82333;
         }
 
         table {
@@ -90,40 +68,41 @@
         th {
             background: #f4f4f4;
         }
+
+        .delete-button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background: #c82333;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Kursadministration</h1>
 
-        <div class="form-group">
-            <label for="new-course-name">Skapa ny kurs:</label>
-            <input type="text" id="new-course-name" placeholder="Ange kursnamn (t.ex. Nybörjarkurs)">
-            <input type="text" id="new-course-id" placeholder="Ange kurs-ID (t.ex. Nybörjarkurs-1)">
-            <button onclick="createCourse()">Skapa kurs</button>
-        </div>
+        <label for="course-name">Kursnamn:</label>
+        <input type="text" id="course-name" placeholder="Ange kursens namn">
 
-        <div class="form-group">
-            <label for="course-select">Välj kurs:</label>
-            <select id="course-select">
-                <!-- Dynamiska kurser -->
-            </select>
-        </div>
+        <button onclick="addCourse()">Skapa kurs</button>
 
-        <div class="form-group">
-            <label for="owner-name">Ägarens namn:</label>
-            <input type="text" id="owner-name" placeholder="Ange ägarens namn">
-        </div>
+        <label for="course-select">Välj kurs:</label>
+        <select id="course-select">
+            <option value="">-- Välj en kurs --</option>
+        </select>
 
-        <div class="form-group">
-            <label for="dog-name">Hundens namn:</label>
-            <input type="text" id="dog-name" placeholder="Ange hundens namn">
-        </div>
+        <label for="owner-name">Ägarens namn:</label>
+        <input type="text" id="owner-name" placeholder="Ange ägarens namn">
 
-        <div class="form-group">
-            <label for="notes">Anteckningar:</label>
-            <textarea id="notes" rows="3" placeholder="Lägg till anteckningar om deltagaren"></textarea>
-        </div>
+        <label for="dog-name">Hundens namn:</label>
+        <input type="text" id="dog-name" placeholder="Ange hundens namn">
+
+        <label for="notes">Anteckningar:</label>
+        <textarea id="notes" rows="3" placeholder="Lägg till anteckningar om deltagaren"></textarea>
 
         <button onclick="addParticipant()">Lägg till deltagare</button>
 
@@ -131,142 +110,113 @@
         <table id="participant-table">
             <thead>
                 <tr>
+                    <th>Kurs</th>
                     <th>Ägare</th>
                     <th>Hund</th>
                     <th>Anteckningar</th>
-                    <th>Kurs</th>
-                    <th>Åtgärd</th>
+                    <th>Ta bort</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Dynamiska rader -->
+                <!-- Dynamiska deltagare -->
             </tbody>
         </table>
-
-        <button class="export-button" onclick="exportToPDF()">Exportera till PDF</button>
     </div>
 
     <script>
-        const courses = JSON.parse(localStorage.getItem('courses')) || {};
-        const participants = JSON.parse(localStorage.getItem('participants')) || {};
+        let courses = JSON.parse(localStorage.getItem('courses')) || {};
+        let participants = JSON.parse(localStorage.getItem('participants')) || {};
 
         function saveToLocalStorage() {
             localStorage.setItem('courses', JSON.stringify(courses));
             localStorage.setItem('participants', JSON.stringify(participants));
         }
 
-        function renderCourseOptions() {
-            const courseSelect = document.getElementById('course-select');
-            courseSelect.innerHTML = '';
+        function addCourse() {
+            const courseName = document.getElementById('course-name').value.trim();
+            if (!courseName) {
+                alert("Ange ett kursnamn!");
+                return;
+            }
 
-            Object.keys(courses).forEach(courseId => {
+            if (!courses[courseName]) {
+                courses[courseName] = [];
+                saveToLocalStorage();
+                renderCourses();
+                alert(`Kurs "${courseName}" skapades!`);
+            } else {
+                alert("Kursen finns redan!");
+            }
+            document.getElementById('course-name').value = '';
+        }
+
+        function renderCourses() {
+            const courseSelect = document.getElementById('course-select');
+            courseSelect.innerHTML = '<option value="">-- Välj en kurs --</option>';
+            Object.keys(courses).forEach(course => {
                 const option = document.createElement('option');
-                option.value = courseId;
-                option.textContent = `${courses[courseId]} (${courseId})`;
+                option.value = course;
+                option.textContent = course;
                 courseSelect.appendChild(option);
             });
         }
 
-        function renderTable() {
-            const tableBody = document.getElementById('participant-table').querySelector('tbody');
-            tableBody.innerHTML = '';
-
-            const selectedCourse = document.getElementById('course-select').value;
-            if (participants[selectedCourse]) {
-                participants[selectedCourse].forEach((participant, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${participant.owner}</td>
-                        <td>${participant.dog}</td>
-                        <td>${participant.notes}</td>
-                        <td>${courses[selectedCourse]}</td>
-                        <td>
-                            <button class="delete-button" onclick="deleteParticipant('${selectedCourse}', ${index})">Ta bort</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
-        }
-
-        function createCourse() {
-            const courseName = document.getElementById('new-course-name').value.trim();
-            const courseId = document.getElementById('new-course-id').value.trim();
-
-            if (!courseName || !courseId) {
-                alert('Ange både kursnamn och kurs-ID.');
-                return;
-            }
-
-            if (courses[courseId]) {
-                alert('En kurs med detta ID finns redan.');
-                return;
-            }
-
-            courses[courseId] = courseName;
-            participants[courseId] = [];
-            saveToLocalStorage();
-            renderCourseOptions();
-            document.getElementById('new-course-name').value = '';
-            document.getElementById('new-course-id').value = '';
-            alert(`Kursen "${courseName}" har skapats!`);
-        }
-
         function addParticipant() {
+            const selectedCourse = document.getElementById('course-select').value;
             const ownerName = document.getElementById('owner-name').value.trim();
             const dogName = document.getElementById('dog-name').value.trim();
             const notes = document.getElementById('notes').value.trim();
-            const selectedCourse = document.getElementById('course-select').value;
-
-            if (!ownerName || !dogName) {
-                alert('Ange både ägarens och hundens namn.');
-                return;
-            }
 
             if (!selectedCourse) {
-                alert('Välj en kurs.');
+                alert("Välj en kurs!");
+                return;
+            }
+            if (!ownerName || !dogName) {
+                alert("Ange både ägarens och hundens namn!");
                 return;
             }
 
+            participants[selectedCourse] = participants[selectedCourse] || [];
             participants[selectedCourse].push({ owner: ownerName, dog: dogName, notes });
             saveToLocalStorage();
+            renderParticipants(selectedCourse);
+
             document.getElementById('owner-name').value = '';
             document.getElementById('dog-name').value = '';
             document.getElementById('notes').value = '';
-            renderTable();
         }
 
-        function deleteParticipant(courseId, index) {
-            participants[courseId].splice(index, 1);
+        function renderParticipants(course) {
+            const tableBody = document.getElementById('participant-table').querySelector('tbody');
+            tableBody.innerHTML = '';
+
+            const selectedParticipants = participants[course] || [];
+            selectedParticipants.forEach((participant, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course}</td>
+                    <td>${participant.owner}</td>
+                    <td>${participant.dog}</td>
+                    <td>${participant.notes}</td>
+                    <td><button class="delete-button" onclick="deleteParticipant('${course}', ${index})">Ta bort</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteParticipant(course, index) {
+            participants[course].splice(index, 1);
             saveToLocalStorage();
-            renderTable();
+            renderParticipants(course);
         }
 
-        function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        document.getElementById('course-select').addEventListener('change', function () {
+            const selectedCourse = this.value;
+            renderParticipants(selectedCourse);
+        });
 
-            const selectedCourse = document.getElementById('course-select').value;
-            const courseName = courses[selectedCourse];
-
-            doc.text(`Deltagarlista: ${courseName}`, 10, 10);
-
-            if (participants[selectedCourse]) {
-                participants[selectedCourse].forEach((participant, index) => {
-                    doc.text(
-                        `${index + 1}. Ägare: ${participant.owner}, Hund: ${participant.dog}, Anteckningar: ${participant.notes}`,
-                        10,
-                        20 + index * 10
-                    );
-                });
-            }
-
-            doc.save(`${courseName}.pdf`);
-        }
-
-        // Initiera vid sidladdning
-        renderCourseOptions();
-        renderTable();
+        // Initiera sidan
+        renderCourses();
     </script>
 </body>
 </html>
