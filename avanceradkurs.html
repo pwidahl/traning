@@ -13,6 +13,7 @@
             cursor: pointer;
             text-align: center;
             margin: 10px 0;
+            text-decoration: none;
         }
 
         .back-button {
@@ -110,9 +111,37 @@
                     { time: "18.40–19.00", content: "Bygga kedjor" }
                 ],
                 notes: ""
+            },
+            3: {
+                title: "Tillfälle 3: Förfining och detaljer",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
+                    { time: "18.10–18.40", content: "Förfining av rörelser och tajming" },
+                    { time: "18.40–19.00", content: "Lägga till detaljer i trick" }
+                ],
+                notes: ""
+            },
+            4: {
+                title: "Tillfälle 4: Programkörning och analys",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition av tidigare moment" },
+                    { time: "18.10–18.40", content: "Körning av programdelar" },
+                    { time: "18.40–19.00", content: "Feedback på program" }
+                ],
+                notes: ""
+            },
+            5: {
+                title: "Tillfälle 5: Uppvisning och avslutning",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och förberedelse" },
+                    { time: "18.10–19.00", content: "Uppvisning av program" },
+                    { time: "19.00–19.20", content: "Reflektion och feedback" }
+                ],
+                notes: ""
             }
         };
 
+        // Kopiera standarddata till sessionsvariabel
         let sessions = JSON.parse(JSON.stringify(defaultSessions));
 
         // Hämta session-id baserat på titel
@@ -158,6 +187,11 @@
         function resetSession() {
             if (confirm("Vill du verkligen återställa till ursprungligt innehåll?")) {
                 const sessionId = getSessionIdByTitle();
-                sessions[sessionId] = JSON.parse</body>
+                sessions[sessionId] = JSON.parse(JSON.stringify(defaultSessions[sessionId]));
+                showSession(sessionId); // Ladda om tillfället med ursprungliga data
+                alert("Tillfället har återställts till ursprungligt innehåll.");
+            }
+        }
+    </script>
+</body>
 </html>
-```
