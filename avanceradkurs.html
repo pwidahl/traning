@@ -12,7 +12,7 @@
             font-size: 1rem;
             cursor: pointer;
             text-align: center;
-            margin: 10px 0;
+            margin: 10px 5px;
             text-decoration: none;
         }
 
@@ -25,6 +25,18 @@
 
         .back-button:hover {
             background: #bdbdbd;
+            color: #000;
+        }
+
+        .home-button {
+            background: #f4f4f4;
+            color: #333;
+            border: 1px solid #ccc;
+            transition: all 0.3s;
+        }
+
+        .home-button:hover {
+            background: #e0e0e0;
             color: #000;
         }
 
@@ -66,8 +78,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- Tillbaka-knapp -->
+        <!-- Navigeringsknappar -->
         <a href="javascript:history.back()" class="button back-button">← Tillbaka</a>
+        <a href="index.html" class="button home-button">Hem</a>
 
         <h1>Avancerad kurs</h1>
         <p>Klicka på ett tillfälle för att redigera innehållet:</p>
@@ -141,7 +154,6 @@
             }
         };
 
-        // Kopiera standarddata till sessionsvariabel
         let sessions = JSON.parse(JSON.stringify(defaultSessions));
 
         // Hämta session-id baserat på titel
