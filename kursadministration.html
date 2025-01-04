@@ -9,18 +9,159 @@
 <body>
     <div class="container">
         <h1>Kursadministration</h1>
-        <p>Välj en kurs nedan för att administrera deltagare och anteckningar:</p>
+        <p>Administrera kurser och deltagare, och analysera för förbättring.</p>
         
-        <div class="course-links">
-            <a href="nyborjarkurs.html">Nybörjarkurs</a>
-            <a href="fortsattningskurs.html">Fortsättningskurs</a>
-            <a href="avanceradkurs.html">Avancerad Kurs</a>
-            <a href="specialkurs.html">Specialkurs</a>
+        <!-- Sektion för att lägga till kurser -->
+        <div>
+            <h2>Lägg till ny kurs</h2>
+            <form id="add-course-form">
+                <input type="text" id="course-name" placeholder="Kursnamn" required>
+                <textarea id="course-description" placeholder="Beskriv kursen"></textarea>
+                <button type="submit">Lägg till kurs</button>
+            </form>
+        </div>
+
+        <!-- Lista med kurser -->
+        <div>
+            <h2>Kurser</h2>
+            <ul id="course-list"></ul>
+        </div>
+
+        <!-- Sektion för att lägga till deltagare -->
+        <div>
+            <h2>Hantera deltagare</h2>
+            <form id="add-participant-form">
+                <select id="course-select" required>
+                    <option value="">Välj en kurs</option>
+                </select>
+                <input type="text" id="participant-name" placeholder="Deltagarens namn" required>
+                <textarea id="participant-progress" placeholder="Beskriv framsteg"></textarea>
+                <button type="submit">Lägg till deltagare</button>
+            </form>
+        </div>
+
+        <!-- Lista med deltagare -->
+        <div>
+            <h2>Deltagare per kurs</h2>
+            <div id="participant-details"></div>
+        </div>
+
+        <!-- Sammanställning och analys -->
+        <div>
+            <h2>Sammanställning</h2>
+            <button onclick="generateSummary()">Generera Sammanställning</button>
+            <textarea id="summary-output" rows="10" readonly></textarea>
         </div>
     </div>
     
     <footer>
-        &copy; 2025 Kursadministration | <a href="kontakt.html">Kontakta oss</a>
+        <a href="index.html">&larr; Tillbaka till startsidan</a>
     </footer>
+
+    <script>
+        // Data för kurser och deltagare
+        const data = {
+            courses: {}
+        };
+
+        // Lägg till ny kurs
+        document.getElementById("add-course-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const courseName = document.getElementById("course-name").value.trim();
+            const courseDescription = document.getElementById("course-description").value.trim();
+
+            if (courseName) {
+                if (!data.courses[courseName]) {
+                    data.courses[courseName] = {
+                        description: courseDescription,
+                        participants: []
+                    };
+                    updateCourseList();
+                    updateCourseSelect();
+                    document.getElementById("course-name").value = "";
+                    document.getElementById("course-description").value = "";
+                } else {
+                    alert("Kursen finns redan!");
+                }
+            }
+        });
+
+        // Uppdatera kurslistan
+        function updateCourseList() {
+            const courseList = document.getElementById("course-list");
+            courseList.innerHTML = "";
+            for (const courseName in data.courses) {
+                const li = document.createElement("li");
+                li.textContent = `${courseName} - ${data.courses[courseName].description}`;
+                courseList.appendChild(li);
+            }
+        }
+
+        // Uppdatera kursväljaren
+        function updateCourseSelect() {
+            const courseSelect = document.getElementById("course-select");
+            courseSelect.innerHTML = '<option value="">Välj en kurs</option>';
+            for (const courseName in data.courses) {
+                const option = document.createElement("option");
+                option.value = courseName;
+                option.textContent = courseName;
+                courseSelect.appendChild(option);
+            }
+        }
+
+        // Lägg till deltagare
+        document.getElementById("add-participant-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const courseName = document.getElementById("course-select").value;
+            const participantName = document.getElementById("participant-name").value.trim();
+            const participantProgress = document.getElementById("participant-progress").value.trim();
+
+            if (courseName && participantName) {
+                data.courses[courseName].participants.push({
+                    name: participantName,
+                    progress: participantProgress
+                });
+                updateParticipantDetails();
+                document.getElementById("participant-name").value = "";
+                document.getElementById("participant-progress").value = "";
+            }
+        });
+
+        // Uppdatera deltagarlistan
+        function updateParticipantDetails() {
+            const participantDetails = document.getElementById("participant-details");
+            participantDetails.innerHTML = "";
+            for (const courseName in data.courses) {
+                const courseDiv = document.createElement("div");
+                courseDiv.innerHTML = `<h3>${courseName}</h3>`;
+                const ul = document.createElement("ul");
+                data.courses[courseName].participants.forEach((participant) => {
+                    const li = document.createElement("li");
+                    li.textContent = `${participant.name}: ${participant.progress}`;
+                    ul.appendChild(li);
+                });
+                courseDiv.appendChild(ul);
+                participantDetails.appendChild(courseDiv);
+            }
+        }
+
+        // Generera sammanställning
+        function generateSummary() {
+            const summaryOutput = document.getElementById("summary-output");
+            let summaryText = "";
+
+            for (const courseName in data.courses) {
+                summaryText += `Kurs: ${courseName}\n`;
+                summaryText += `Beskrivning: ${data.courses[courseName].description}\n`;
+                summaryText += `Deltagare:\n`;
+                data.courses[courseName].participants.forEach((participant) => {
+                    summaryText += `  - ${participant.name}: ${participant.progress}\n`;
+                });
+                summaryText += `\n`;
+            }
+
+            summaryOutput.value = summaryText.trim();
+        }
+    </script>
 </body>
 </html>
