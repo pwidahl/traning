@@ -5,74 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
     <style>
+        /* Grundinställningar */
         body {
-            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Arial', sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
         }
 
-        h1 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        p {
-            color: #555;
-            font-size: 18px;
-        }
-
+        /* Container */
         .container {
-            width: 100%;
-            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px 20px;
+            max-width: 600px;
             text-align: center;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
+        /* Rubrik */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Text */
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Kursknappar */
         .course-links {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             gap: 15px;
-            margin-top: 20px;
+            justify-content: center;
         }
 
         .course-links a {
             text-decoration: none;
-            padding: 15px 25px;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 8px;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .course-links a:hover {
-            background-color: #0056b3;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
         }
 
+        /* Footer */
         footer {
             margin-top: 30px;
-            font-size: 14px;
-            color: #666;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         footer a {
+            color: #fff;
             text-decoration: none;
-            color: #007BFF;
+            font-weight: bold;
         }
 
         footer a:hover {
@@ -82,7 +89,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Välkommen till Kursadministration</h1>
+        <h1>Kursadministration</h1>
         <p>Välj en kurs nedan för att administrera deltagare och anteckningar:</p>
         
         <div class="course-links">
