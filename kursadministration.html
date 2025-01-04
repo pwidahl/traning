@@ -6,7 +6,7 @@
     <title>Kursadministration</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Anpassningar för kursadministration */
+        /* Anpassningar */
         form {
             display: flex;
             flex-direction: column;
@@ -31,21 +31,6 @@
             background: #d8c9b9;
         }
 
-        ul, h3 {
-            margin-top: 15px;
-            text-align: left;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
-        }
-
         textarea {
             resize: vertical;
         }
@@ -55,7 +40,7 @@
             white-space: pre-wrap;
         }
 
-        /* Mobilanpassning */
+        /* Responsiv design */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -63,10 +48,6 @@
 
             h1, h2 {
                 font-size: 1.5rem;
-            }
-
-            form {
-                gap: 8px;
             }
 
             input, textarea, select, button {
@@ -83,7 +64,7 @@
 <body>
     <div class="container">
         <h1>Kursadministration</h1>
-        <p>Administrera kurser och deltagare, och analysera för förbättring.</p>
+        <p>Administrera kurser, deltagare och analysera kursinformation.</p>
         
         <!-- Sektion för att lägga till kurser -->
         <div>
@@ -91,6 +72,10 @@
             <form id="add-course-form">
                 <input type="text" id="course-name" placeholder="Kursnamn" required>
                 <textarea id="course-description" placeholder="Beskriv kursen"></textarea>
+                <label for="course-start-date">Kursstart:</label>
+                <input type="date" id="course-start-date" required>
+                <label for="course-sessions">Antal tillfällen:</label>
+                <input type="number" id="course-sessions" min="1" placeholder="Antal tillfällen" required>
                 <button type="submit">Lägg till kurs</button>
             </form>
         </div>
@@ -125,6 +110,7 @@
             <h2>Sammanställning</h2>
             <button onclick="generateSummary()">Generera Sammanställning</button>
             <textarea id="summary-output" rows="10" readonly></textarea>
+            <button onclick="exportSummary()">Exportera Sammanställning</button>
         </div>
     </div>
     
@@ -143,17 +129,23 @@
             e.preventDefault();
             const courseName = document.getElementById("course-name").value.trim();
             const courseDescription = document.getElementById("course-description").value.trim();
+            const courseStartDate = document.getElementById("course-start-date").value;
+            const courseSessions = parseInt(document.getElementById("course-sessions").value);
 
-            if (courseName) {
+            if (courseName && courseStartDate && courseSessions > 0) {
                 if (!data.courses[courseName]) {
                     data.courses[courseName] = {
                         description: courseDescription,
+                        startDate: courseStartDate,
+                        sessions: courseSessions,
                         participants: []
                     };
                     updateCourseList();
                     updateCourseSelect();
                     document.getElementById("course-name").value = "";
                     document.getElementById("course-description").value = "";
+                    document.getElementById("course-start-date").value = "";
+                    document.getElementById("course-sessions").value = "";
                 } else {
                     alert("Kursen finns redan!");
                 }
@@ -166,7 +158,7 @@
             courseList.innerHTML = "";
             for (const courseName in data.courses) {
                 const li = document.createElement("li");
-                li.textContent = `${courseName} - ${data.courses[courseName].description}`;
+                li.textContent = `${courseName} - Start: ${data.courses[courseName].startDate}, Tillfällen: ${data.courses[courseName].sessions}`;
                 courseList.appendChild(li);
             }
         }
@@ -227,6 +219,8 @@
             for (const courseName in data.courses) {
                 summaryText += `Kurs: ${courseName}\n`;
                 summaryText += `Beskrivning: ${data.courses[courseName].description}\n`;
+                summaryText += `Startdatum: ${data.courses[courseName].startDate}\n`;
+                summaryText += `Antal tillfällen: ${data.courses[courseName].sessions}\n`;
                 summaryText += `Deltagare:\n`;
                 data.courses[courseName].participants.forEach((participant) => {
                     summaryText += `  - ${participant.name}: ${participant.progress}\n`;
@@ -235,6 +229,16 @@
             }
 
             summaryOutput.value = summaryText.trim();
+        }
+
+        // Exportera sammanställning till en textfil
+        function exportSummary() {
+            const summaryOutput = document.getElementById("summary-output").value;
+            const blob = new Blob([summaryOutput], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "kurs-sammanstallning.txt";
+            link.click();
         }
     </script>
 </body>
