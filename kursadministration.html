@@ -37,7 +37,7 @@
             margin-bottom: 5px;
         }
 
-        input, select, button {
+        input, textarea, select, button {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -87,18 +87,34 @@
 <body>
     <div class="container">
         <h1>Kursadministration</h1>
+
+        <div class="form-group">
+            <label for="new-course-name">Skapa ny kurs:</label>
+            <input type="text" id="new-course-name" placeholder="Ange kursnamn (t.ex. Nybörjarkurs)">
+            <input type="text" id="new-course-id" placeholder="Ange kurs-ID (t.ex. Nybörjarkurs-1)">
+            <button onclick="createCourse()">Skapa kurs</button>
+        </div>
+
         <div class="form-group">
             <label for="course-select">Välj kurs:</label>
             <select id="course-select">
-                <option value="Nybörjarkurs">Nybörjarkurs</option>
-                <option value="Fortsättningskurs">Fortsättningskurs</option>
-                <option value="Avancerad kurs">Avancerad kurs</option>
+                <!-- Dynamiska kurser -->
             </select>
         </div>
 
         <div class="form-group">
-            <label for="participant-name">Deltagarens namn:</label>
-            <input type="text" id="participant-name" placeholder="Ange deltagarens namn">
+            <label for="owner-name">Ägarens namn:</label>
+            <input type="text" id="owner-name" placeholder="Ange ägarens namn">
+        </div>
+
+        <div class="form-group">
+            <label for="dog-name">Hundens namn:</label>
+            <input type="text" id="dog-name" placeholder="Ange hundens namn">
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Anteckningar:</label>
+            <textarea id="notes" rows="3" placeholder="Lägg till anteckningar om deltagaren"></textarea>
         </div>
 
         <button onclick="addParticipant()">Lägg till deltagare</button>
@@ -107,61 +123,117 @@
         <table id="participant-table">
             <thead>
                 <tr>
-                    <th>Namn</th>
+                    <th>Ägare</th>
+                    <th>Hund</th>
+                    <th>Anteckningar</th>
                     <th>Kurs</th>
                     <th>Åtgärd</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Dynamiskt innehåll -->
+                <!-- Dynamiska rader -->
             </tbody>
         </table>
     </div>
 
     <script>
-        const participants = JSON.parse(localStorage.getItem('participants')) || [];
+        const courses = JSON.parse(localStorage.getItem('courses')) || {};
+        const participants = JSON.parse(localStorage.getItem('participants')) || {};
+
+        function saveToLocalStorage() {
+            localStorage.setItem('courses', JSON.stringify(courses));
+            localStorage.setItem('participants', JSON.stringify(participants));
+        }
+
+        function renderCourseOptions() {
+            const courseSelect = document.getElementById('course-select');
+            courseSelect.innerHTML = '';
+
+            Object.keys(courses).forEach(courseId => {
+                const option = document.createElement('option');
+                option.value = courseId;
+                option.textContent = `${courses[courseId]} (${courseId})`;
+                courseSelect.appendChild(option);
+            });
+        }
 
         function renderTable() {
             const tableBody = document.getElementById('participant-table').querySelector('tbody');
             tableBody.innerHTML = '';
 
-            participants.forEach((participant, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${participant.name}</td>
-                    <td>${participant.course}</td>
-                    <td>
-                        <button class="delete-button" onclick="deleteParticipant(${index})">Ta bort</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
+            const selectedCourse = document.getElementById('course-select').value;
+            if (participants[selectedCourse]) {
+                participants[selectedCourse].forEach((participant, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${participant.owner}</td>
+                        <td>${participant.dog}</td>
+                        <td>${participant.notes}</td>
+                        <td>${courses[selectedCourse]}</td>
+                        <td>
+                            <button class="delete-button" onclick="deleteParticipant('${selectedCourse}', ${index})">Ta bort</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
         }
 
-        function addParticipant() {
-            const nameInput = document.getElementById('participant-name');
-            const courseSelect = document.getElementById('course-select');
-            const name = nameInput.value.trim();
-            const course = courseSelect.value;
+        function createCourse() {
+            const courseName = document.getElementById('new-course-name').value.trim();
+            const courseId = document.getElementById('new-course-id').value.trim();
 
-            if (!name) {
-                alert('Ange deltagarens namn.');
+            if (!courseName || !courseId) {
+                alert('Ange både kursnamn och kurs-ID.');
                 return;
             }
 
-            participants.push({ name, course });
-            localStorage.setItem('participants', JSON.stringify(participants));
-            nameInput.value = '';
+            if (courses[courseId]) {
+                alert('En kurs med detta ID finns redan.');
+                return;
+            }
+
+            courses[courseId] = courseName;
+            participants[courseId] = [];
+            saveToLocalStorage();
+            renderCourseOptions();
+            document.getElementById('new-course-name').value = '';
+            document.getElementById('new-course-id').value = '';
+            alert(`Kursen "${courseName}" har skapats!`);
+        }
+
+        function addParticipant() {
+            const ownerName = document.getElementById('owner-name').value.trim();
+            const dogName = document.getElementById('dog-name').value.trim();
+            const notes = document.getElementById('notes').value.trim();
+            const selectedCourse = document.getElementById('course-select').value;
+
+            if (!ownerName || !dogName) {
+                alert('Ange både ägarens och hundens namn.');
+                return;
+            }
+
+            if (!selectedCourse) {
+                alert('Välj en kurs.');
+                return;
+            }
+
+            participants[selectedCourse].push({ owner: ownerName, dog: dogName, notes });
+            saveToLocalStorage();
+            document.getElementById('owner-name').value = '';
+            document.getElementById('dog-name').value = '';
+            document.getElementById('notes').value = '';
             renderTable();
         }
 
-        function deleteParticipant(index) {
-            participants.splice(index, 1);
-            localStorage.setItem('participants', JSON.stringify(participants));
+        function deleteParticipant(courseId, index) {
+            participants[courseId].splice(index, 1);
+            saveToLocalStorage();
             renderTable();
         }
 
-        // Initiera tabellen vid sidladdning
+        // Initiera vid sidladdning
+        renderCourseOptions();
         renderTable();
     </script>
 </body>
