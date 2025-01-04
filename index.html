@@ -6,53 +6,96 @@
     <title>Kursadministration</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-            max-width: 800px;
-            text-align: center;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
+
         h1 {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            color: #333;
         }
+
+        p {
+            color: #555;
+            font-size: 18px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
         .course-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
+            margin-top: 20px;
         }
+
         .course-links a {
             text-decoration: none;
-            padding: 15px 20px;
+            padding: 15px 25px;
             background-color: #007BFF;
             color: white;
-            border-radius: 5px;
-            font-size: 18px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
+
         .course-links a:hover {
             background-color: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
+
         footer {
-            margin-top: 50px;
+            margin-top: 30px;
             font-size: 14px;
             color: #666;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <h1>Välkommen till Kursadministration</h1>
-    <p>Välj en kurs nedan för att administrera deltagare och anteckningar:</p>
-    
-    <div class="course-links">
-        <a href="traningssystem.html">Nybörjarkurs</a>
-        <a href="nyinlarning.html">Fortsättningskurs</a>
-        <a href="monsterinlarning.html">Avancerad Kurs</a>
-        <a href="specialkurs.html">Specialkurs</a>
-           <a href="forberedelse.html">Kursadministration</a>
+    <div class="container">
+        <h1>Välkommen till Kursadministration</h1>
+        <p>Välj en kurs nedan för att administrera deltagare och anteckningar:</p>
+        
+        <div class="course-links">
+            <a href="traningssystem.html">Nybörjarkurs</a>
+            <a href="nyinlarning.html">Fortsättningskurs</a>
+            <a href="monsterinlarning.html">Avancerad Kurs</a>
+            <a href="specialkurs.html">Specialkurs</a>
+            <a href="forberedelse.html">Kursadministration</a>
+        </div>
     </div>
     
     <footer>
-        &copy; 2025 Kursadministration | Skapad för att underlätta kursplanering
+        &copy; 2025 Kursadministration | <a href="kontakt.html">Kontakta oss</a>
     </footer>
 </body>
 </html>
