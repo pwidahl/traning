@@ -4,76 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nybörjarkurs</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            max-width: 800px;
-            text-align: center;
-            line-height: 1.6;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        .session-buttons {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .session-details {
-            margin-top: 30px;
-            text-align: left;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            display: none;
-        }
-        footer {
-            margin-top: 50px;
-            font-size: 14px;
-            color: #666;
-        }
-        footer a {
-            text-decoration: none;
-            color: #007BFF;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Nybörjarkurs</h1>
-    <p>Klicka på ett tillfälle för att se detaljer:</p>
-    
-    <div class="session-buttons">
-        <button onclick="showSession(1)">Tillfälle 1</button>
-        <button onclick="showSession(2)">Tillfälle 2</button>
-        <button onclick="showSession(3)">Tillfälle 3</button>
-        <button onclick="showSession(4)">Tillfälle 4</button>
-        <button onclick="showSession(5)">Tillfälle 5</button>
+    <div class="container">
+        <h1>Nybörjarkurs</h1>
+        <p>Klicka på ett tillfälle för att se detaljer:</p>
+        
+        <div class="course-links">
+            <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
+            <a href="#session2" onclick="showSession(2)">Tillfälle 2</a>
+            <a href="#session3" onclick="showSession(3)">Tillfälle 3</a>
+            <a href="#session4" onclick="showSession(4)">Tillfälle 4</a>
+            <a href="#session5" onclick="showSession(5)">Tillfälle 5</a>
+        </div>
+        
+        <div id="session-details" class="session-details" style="margin-top: 20px;">
+            <h2 id="session-title"></h2>
+            <p id="session-description"></p>
+        </div>
     </div>
     
-    <div id="session-details" class="session-details">
-        <h2 id="session-title"></h2>
-        <p id="session-description"></p>
-    </div>
-
     <footer>
         <a href="index.html">&larr; Tillbaka till startsidan</a>
     </footer>
@@ -84,11 +35,11 @@
                 title: "Tillfälle 1: Introduktion och grunder",
                 description: `
                     <ul>
-                        <li><strong>18.00–18.10:</strong> Introduktion</li>
-                        <li><strong>18.10–18.40:</strong> Grundpositioner (Front, höger sida)</li>
-                        <li><strong>18.40–19.00:</strong> Trick: Snurra höger/vänster</li>
-                        <li><strong>19.00–19.20:</strong> Teori: Shaping och belöningsplacering</li>
-                        <li><strong>19.20–19.30:</strong> Avslutning och hemläxa</li>
+                        <li>18.00–18.10: Introduktion</li>
+                        <li>18.10–18.40: Grundpositioner (Front, höger sida)</li>
+                        <li>18.40–19.00: Trick: Snurra höger/vänster</li>
+                        <li>19.00–19.20: Teori: Shaping och belöningsplacering</li>
+                        <li>19.20–19.30: Avslutning och hemläxa</li>
                     </ul>
                     <strong>Hemläxa:</strong> Träna in Front och höger sida samt snurra höger/vänster.
                 `
@@ -97,11 +48,11 @@
                 title: "Tillfälle 2: Fördjupning av positioner och rörelse",
                 description: `
                     <ul>
-                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
-                        <li><strong>18.10–18.30:</strong> Grundpositioner: Vänster sida, bakom</li>
-                        <li><strong>18.30–18.50:</strong> Trick: Slalom framåt/bakåt</li>
-                        <li><strong>18.50–19.10:</strong> Teori: Ordförståelse och muskelminne</li>
-                        <li><strong>19.10–19.30:</strong> Avslutning och hemläxa</li>
+                        <li>18.00–18.10: Uppvärmning och repetition</li>
+                        <li>18.10–18.30: Grundpositioner: Vänster sida, bakom</li>
+                        <li>18.30–18.50: Trick: Slalom framåt/bakåt</li>
+                        <li>18.50–19.10: Teori: Ordförståelse och muskelminne</li>
+                        <li>19.10–19.30: Avslutning och hemläxa</li>
                     </ul>
                     <strong>Hemläxa:</strong> Träna slalom och positionerna vänster sida och bakom.
                 `
@@ -110,11 +61,11 @@
                 title: "Tillfälle 3: Bygga komplexitet",
                 description: `
                     <ul>
-                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
-                        <li><strong>18.10–18.30:</strong> Trick: Backa</li>
-                        <li><strong>18.30–18.50:</strong> Trick: Sitt fint och buga</li>
-                        <li><strong>18.50–19.10:</strong> Kombinera positioner och trick</li>
-                        <li><strong>19.10–19.30:</strong> Teori och avslutning</li>
+                        <li>18.00–18.10: Uppvärmning och repetition</li>
+                        <li>18.10–18.30: Trick: Backa</li>
+                        <li>18.30–18.50: Trick: Sitt fint och buga</li>
+                        <li>18.50–19.10: Kombinera positioner och trick</li>
+                        <li>19.10–19.30: Teori och avslutning</li>
                     </ul>
                     <strong>Hemläxa:</strong> Träna korta sekvenser med kombinationer av positioner och trick.
                 `
@@ -123,10 +74,10 @@
                 title: "Tillfälle 4: Sätta samman rörelser och program",
                 description: `
                     <ul>
-                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
-                        <li><strong>18.10–18.40:</strong> Kedja rörelser</li>
-                        <li><strong>18.40–19.10:</strong> Förbered program</li>
-                        <li><strong>19.10–19.30:</strong> Teori och                         feedback</li>
+                        <li>18.00–18.10: Uppvärmning och repetition</li>
+                        <li>18.10–18.40: Kedja rörelser</li>
+                        <li>18.40–19.10: Förbered program</li>
+                        <li>19.10–19.30: Teori och feedback</li>
                     </ul>
                     <strong>Hemläxa:</strong> Sätt ihop en sekvens på 30-45 sekunder till musik.
                 `
@@ -135,17 +86,16 @@
                 title: "Tillfälle 5: Uppvisning och avslutning",
                 description: `
                     <ul>
-                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
-                        <li><strong>18.10–19.00:</strong> Varje ekipage visar sitt program</li>
-                        <li><strong>19.00–19.20:</strong> Reflektion och feedback</li>
-                        <li><strong>19.20–19.30:</strong> Avslutning och gruppfoto</li>
+                        <li>18.00–18.10: Uppvärmning och repetition</li>
+                        <li>18.10–19.00: Varje ekipage visar sitt program</li>
+                        <li>19.00–19.20: Reflektion och feedback</li>
+                        <li>19.20–19.30: Avslutning och gruppfoto</li>
                     </ul>
                     <strong>Hemläxa:</strong> Reflektera över kursen och planera vidare träning.
                 `
             }
         };
 
-        // Visa information om valt tillfälle
         function showSession(sessionId) {
             const sessionDetails = document.getElementById("session-details");
             const sessionTitle = document.getElementById("session-title");
@@ -160,4 +110,3 @@
     </script>
 </body>
 </html>
-                        
