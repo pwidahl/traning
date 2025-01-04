@@ -42,6 +42,14 @@
             background: #f4f4f4;
         }
 
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
         textarea {
             width: 100%;
             padding: 10px;
@@ -82,7 +90,7 @@
 <body>
     <div class="container">
         <h1>Nybörjarkurs</h1>
-        <p>Klicka på ett tillfälle för att redigera innehållet:</p>
+        <p>Klicka på ett tillfälle för att justera kursplanen:</p>
 
         <div>
             <button onclick="showSession(1)">Tillfälle 1</button>
@@ -105,6 +113,8 @@
                 <tbody></tbody>
             </table>
 
+            <button class="save-button" onclick="addRow()">Lägg till rad</button>
+
             <h3>Anteckningar:</h3>
             <textarea id="session-notes" rows="5" placeholder="Skriv anteckningar här..."></textarea>
             <button class="save-button" onclick="saveSession()">Spara</button>
@@ -125,6 +135,7 @@
                 ],
                 notes: ""
             },
+            // Fler tillfällen kan definieras här
             2: {
                 title: "Tillfälle 2: Fördjupning",
                 schedule: [
@@ -133,36 +144,6 @@
                     { time: "18:30–18:50", content: "Trick: Slalom framåt och bakåt" },
                     { time: "18:50–19:10", content: "Teori: Ordförståelse och timing" },
                     { time: "19:10–19:30", content: "Avslut och hemläxa" }
-                ],
-                notes: ""
-            },
-            3: {
-                title: "Tillfälle 3: Rörelse och precision",
-                schedule: [
-                    { time: "18:00–18:10", content: "Repetition av tidigare moment" },
-                    { time: "18:10–18:30", content: "Positioner i rörelse: Front och vänster sida" },
-                    { time: "18:30–18:50", content: "Trick: Backa och snurra i olika riktningar" },
-                    { time: "18:50–19:10", content: "Teori: Kedjning av rörelser" },
-                    { time: "19:10–19:30", content: "Frågor och feedback" }
-                ],
-                notes: ""
-            },
-            4: {
-                title: "Tillfälle 4: Bygga program",
-                schedule: [
-                    { time: "18:00–18:10", content: "Repetition och uppvärmning" },
-                    { time: "18:10–18:40", content: "Kombinera trick och positioner" },
-                    { time: "18:40–19:10", content: "Träna övergångar" },
-                    { time: "19:10–19:30", content: "Feedback och frågor" }
-                ],
-                notes: ""
-            },
-            5: {
-                title: "Tillfälle 5: Avslutning och uppvisning",
-                schedule: [
-                    { time: "18:00–18:10", content: "Uppvärmning" },
-                    { time: "18:10–19:00", content: "Uppvisning av program" },
-                    { time: "19:00–19:30", content: "Feedback och avslutning" }
                 ],
                 notes: ""
             }
@@ -177,19 +158,38 @@
 
             const tableBody = document.getElementById("schedule-table").querySelector("tbody");
             tableBody.innerHTML = "";
-            session.schedule.forEach(item => {
+
+            session.schedule.forEach((item, index) => {
                 const row = document.createElement("tr");
-                row.innerHTML = `<td>${item.time}</td><td>${item.content}</td>`;
+                row.innerHTML = `
+                    <td><input type="text" value="${item.time}" onchange="updateTime(${sessionId}, ${index}, this.value)"></td>
+                    <td><input type="text" value="${item.content}" onchange="updateContent(${sessionId}, ${index}, this.value)"></td>
+                `;
                 tableBody.appendChild(row);
             });
 
             document.getElementById("session-details").style.display = "block";
         }
 
-        function saveSession() {
-            const sessionTitle = document.getElementById("session-title").innerText;
+        function updateTime(sessionId, index, value) {
+            sessions[sessionId].schedule[index].time = value;
+        }
+
+        function updateContent(sessionId, index, value) {
+            sessions[sessionId].schedule[index].content = value;
+        }
+
+        function addRow() {
             const sessionId = Object.keys(defaultSessions).find(
-                id => defaultSessions[id].title === sessionTitle
+                id => defaultSessions[id].title === document.getElementById("session-title").innerText
+            );
+            sessions[sessionId].schedule.push({ time: "", content: "" });
+            showSession(sessionId);
+        }
+
+        function saveSession() {
+            const sessionId = Object.keys(defaultSessions).find(
+                id => defaultSessions[id].title === document.getElementById("session-title").innerText
             );
             sessions[sessionId].notes = document.getElementById("session-notes").value;
             alert("Ändringar sparade!");
