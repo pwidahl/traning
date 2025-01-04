@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -59,7 +60,8 @@
             </select>
             <button onclick="generateSummary()">Generera Sammanställning</button>
             <textarea id="summary-output" rows="10" readonly></textarea>
-            <button onclick="exportSummary()">Exportera Sammanställning</button>
+            <button onclick="exportToPDF()">Exportera som PDF</button>
+            <button onclick="exportToWord()">Exportera som Word</button>
         </div>
     </div>
     
@@ -204,13 +206,34 @@
             return summaryText;
         }
 
-        // Exportera sammanställning till en textfil
-        function exportSummary() {
+        // Exportera sammanställning som PDF
+        async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
             const summaryOutput = document.getElementById("summary-output").value;
-            const blob = new Blob([summaryOutput], { type: "text/plain" });
+
+            const lines = summaryOutput.split("\n");
+            let y = 10;
+
+            lines.forEach((line) => {
+                pdf.text(line, 10, y);
+                y += 10;
+                if (y > 280) { // Starta ny sida om det överstiger sidan
+                    pdf.addPage();
+                    y = 10;
+                }
+            });
+
+            pdf.save("kurs-sammanstallning.pdf");
+        }
+
+        // Exportera sammanställning som Word
+        function exportToWord() {
+            const summaryOutput = document.getElementById("summary-output").value;
+            const blob = new Blob([summaryOutput], { type: "application/msword" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "kurs-sammanstallning.txt";
+            link.download = "kurs-sammanstallning.doc";
             link.click();
         }
     </script>
