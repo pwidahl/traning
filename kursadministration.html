@@ -4,184 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            max-width: 800px;
-            line-height: 1.6;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        .participant {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, select, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .summary {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Kursadministration</h1>
-    <form id="participant-form">
-        <h2>Lägg till deltagare</h2>
-        <label for="course">Kurs:</label>
-        <select id="course" required>
-            <option value="">Välj kurs</option>
-            <option value="Nybörjarkurs">Nybörjarkurs</option>
-            <option value="Fortsättningskurs">Fortsättningskurs</option>
-            <option value="Avancerad kurs">Avancerad kurs</option>
-            <option value="Specialkurs">Specialkurs</option>
-        </select>
-
-        <label for="date">Datum:</label>
-        <input type="date" id="date" required>
-
-        <label for="name">Namn:</label>
-        <input type="text" id="name" placeholder="Ange deltagarens namn" required>
-
-        <label for="progress">Framsteg:</label>
-        <textarea id="progress" rows="3" placeholder="Beskriv deltagarens framsteg"></textarea>
-
-        <label for="notes">Anteckningar:</label>
-        <textarea id="notes" rows="3" placeholder="Lägg till extra anteckningar"></textarea>
-
-        <button type="submit">Lägg till deltagare</button>
-    </form>
-
-    <div id="participants-list">
-        <h2>Kursdeltagare</h2>
-        <!-- Deltagare visas här dynamiskt -->
+    <div class="container">
+        <h1>Kursadministration</h1>
+        <p>Välj en kurs nedan för att administrera deltagare och anteckningar:</p>
+        
+        <div class="course-links">
+            <a href="nyborjarkurs.html">Nybörjarkurs</a>
+            <a href="fortsattningskurs.html">Fortsättningskurs</a>
+            <a href="avanceradkurs.html">Avancerad Kurs</a>
+            <a href="specialkurs.html">Specialkurs</a>
+        </div>
     </div>
-
-    <div class="summary">
-        <h2>Sammanställning</h2>
-        <button onclick="generateSummary()">Generera Sammanställning</button>
-        <textarea id="summary-output" rows="10" placeholder="Sammanställning visas här..." readonly></textarea>
-    </div>
-
-    <script>
-        // Objekt för att lagra deltagare för varje kurs
-        const courses = {
-            "Nybörjarkurs": [],
-            "Fortsättningskurs": [],
-            "Avancerad kurs": [],
-            "Specialkurs": [] // Ny kurs tillagd
-        };
-
-        // Hantera formuläret för att lägga till deltagare
-        document.getElementById("participant-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            // Hämta data från formuläret
-            const course = document.getElementById("course").value;
-            const date = document.getElementById("date").value;
-            const name = document.getElementById("name").value.trim();
-            const progress = document.getElementById("progress").value.trim();
-            const notes = document.getElementById("notes").value.trim();
-
-            if (!course || !name || !date) {
-                alert("Var vänlig fyll i kurs, datum och namn.");
-                return;
-            }
-
-            // Skapa deltagarobjekt och lägga till i kursens lista
-            const participant = { name, date, progress, notes };
-            courses[course].push(participant);
-
-            // Rensa formuläret
-            document.getElementById("course").value = "";
-            document.getElementById("date").value = "";
-            document.getElementById("name").value = "";
-            document.getElementById("progress").value = "";
-            document.getElementById("notes").value = "";
-
-            // Uppdatera deltagarlistan
-            updateParticipantsList();
-        });
-
-        // Funktion för att uppdatera listan med deltagare
-        function updateParticipantsList() {
-            const participantsList = document.getElementById("participants-list");
-            participantsList.innerHTML = "<h2>Kursdeltagare</h2>";
-
-            for (const course in courses) {
-                if (courses[course].length > 0) {
-                    const courseDiv = document.createElement("div");
-                    courseDiv.classList.add("participant");
-                    courseDiv.innerHTML = `<h3>${course}</h3>`;
-
-                    courses[course].forEach((participant, index) => {
-                        const participantDiv = document.createElement("div");
-                        participantDiv.innerHTML = `
-                            <p><strong>Namn:</strong> ${participant.name}</p>
-                            <p><strong>Datum:</strong> ${participant.date}</p>
-                            <p><strong>Framsteg:</strong> ${participant.progress}</p>
-                            <p><strong>Anteckningar:</strong> ${participant.notes}</p>
-                            <button onclick="removeParticipant('${course}', ${index})">Ta bort</button>
-                        `;
-                        courseDiv.appendChild(participantDiv);
-                    });
-
-                    participantsList.appendChild(courseDiv);
-                }
-            }
-        }
-
-        // Ta bort deltagare
-        function removeParticipant(course, index) {
-            courses[course].splice(index, 1);
-            updateParticipantsList();
-        }
-
-        // Generera sammanställning
-        function generateSummary() {
-            const summaryOutput = document.getElementById("summary-output");
-            let summaryText = "";
-
-            for (const course in courses) {
-                if (courses[course].length > 0) {
-                    summaryText += `Kurs: ${course}\n`;
-                    courses[course].forEach(participant => {
-                        summaryText += `  Namn: ${participant.name}\n`;
-                        summaryText += `  Datum: ${participant.date}\n`;
-                        summaryText += `  Framsteg: ${participant.progress}\n`;
-                        summaryText += `  Anteckningar: ${participant.notes}\n\n`;
-                    });
-                }
-            }
-
-            summaryOutput.value = summaryText.trim();
-        }
-    </script>
+    
+    <footer>
+        &copy; 2025 Kursadministration | <a href="kontakt.html">Kontakta oss</a>
+    </footer>
 </body>
 </html>
