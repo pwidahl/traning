@@ -1,32 +1,140 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Underhåll</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      padding: 20px;
-    }
-
-    a {
-      color: #87CEEB;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kursdeltagare och Anteckningar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .participant {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .summary {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Underhåll</h1>
-  <ul>
-    <li>Enkla trick: 1 gång i veckan</li>
-    <li>Svåra kedjor: 2 gånger i månaden</li>
-  </ul>
-  <p><a href="index.html">Tillbaka till startsidan</a></p>
+    <h1>Kursdeltagare och Anteckningar</h1>
+    <form id="participant-form">
+        <h2>Lägg till ny deltagare</h2>
+        <label for="name">Namn:</label>
+        <input type="text" id="name" placeholder="Ange deltagarens namn" required>
+
+        <label for="progress">Framsteg:</label>
+        <textarea id="progress" rows="3" placeholder="Beskriv deltagarens framsteg"></textarea>
+
+        <label for="notes">Anteckningar:</label>
+        <textarea id="notes" rows="3" placeholder="Lägg till extra anteckningar"></textarea>
+
+        <button type="submit">Lägg till deltagare</button>
+    </form>
+
+    <div id="participants-list">
+        <h2>Kursdeltagare</h2>
+        <!-- Deltagare läggs till här dynamiskt -->
+    </div>
+
+    <div class="summary">
+        <h2>Sammanställning</h2>
+        <button onclick="generateSummary()">Generera Sammanställning</button>
+        <textarea id="summary-output" rows="10" placeholder="Sammanställning visas här..." readonly></textarea>
+    </div>
+
+    <script>
+        const participants = [];
+
+        // Lägg till deltagare
+        document.getElementById("participant-form").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const progress = document.getElementById("progress").value;
+            const notes = document.getElementById("notes").value;
+
+            const participant = { name, progress, notes };
+            participants.push(participant);
+
+            document.getElementById("name").value = "";
+            document.getElementById("progress").value = "";
+            document.getElementById("notes").value = "";
+
+            updateParticipantsList();
+        });
+
+        // Uppdatera listan med deltagare
+        function updateParticipantsList() {
+            const participantsList = document.getElementById("participants-list");
+            participantsList.innerHTML = "<h2>Kursdeltagare</h2>";
+
+            participants.forEach((participant, index) => {
+                const participantDiv = document.createElement("div");
+                participantDiv.classList.add("participant");
+                participantDiv.innerHTML = `
+                    <h3>${participant.name}</h3>
+                    <p><strong>Framsteg:</strong> ${participant.progress}</p>
+                    <p><strong>Anteckningar:</strong> ${participant.notes}</p>
+                    <button onclick="removeParticipant(${index})">Ta bort</button>
+                `;
+                participantsList.appendChild(participantDiv);
+            });
+        }
+
+        // Ta bort deltagare
+        function removeParticipant(index) {
+            participants.splice(index, 1);
+            updateParticipantsList();
+        }
+
+        // Generera sammanställning
+        function generateSummary() {
+            const summaryOutput = document.getElementById("summary-output");
+            let summaryText = "";
+
+            participants.forEach(participant => {
+                summaryText += `Namn: ${participant.name}\n`;
+                summaryText += `Framsteg: ${participant.progress}\n`;
+                summaryText += `Anteckningar: ${participant.notes}\n\n`;
+            });
+
+            summaryOutput.value = summaryText.trim();
+        }
+    </script>
 </body>
 </html>
