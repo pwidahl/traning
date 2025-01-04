@@ -1,147 +1,163 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Träningssystem för Hundar</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f5f5;
-    }
-
-    header {
-      background-color: #87CEEB;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    nav {
-      background-color: #333;
-      color: white;
-      padding: 10px;
-      text-align: center;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .section {
-      background: white;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .section h2 {
-      color: #87CEEB;
-    }
-
-    footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nybörjarkurs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .session-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .session-details {
+            margin-top: 30px;
+            text-align: left;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #666;
+        }
+        footer a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Träningssystem för Hundar</h1>
-    <p>Ett uppdaterat steg-för-steg-system för att träna din hund.</p>
-  </header>
-
-  <nav>
-    <a href="#forberedelse">Förberedelse</a>
-    <a href="#inlarning">Nyinlärning</a>
-    <a href="#underhall">Underhåll</a>
-    <a href="#monster">Mönsterinlärning</a>
-  </nav>
-
-  <div class="container">
-    <div id="forberedelse" class="section">
-      <h2>Förberedelse inför Nyinlärning</h2>
-      <ul>
-        <li>Definiera målet</li>
-        <li>Definiera behov</li>
-        <li>Välj verktyg</li>
-        <li>Välj plats</li>
-      </ul>
+    <h1>Nybörjarkurs</h1>
+    <p>Klicka på ett tillfälle för att se detaljer:</p>
+    
+    <div class="session-buttons">
+        <button onclick="showSession(1)">Tillfälle 1</button>
+        <button onclick="showSession(2)">Tillfälle 2</button>
+        <button onclick="showSession(3)">Tillfälle 3</button>
+        <button onclick="showSession(4)">Tillfälle 4</button>
+        <button onclick="showSession(5)">Tillfälle 5</button>
+    </div>
+    
+    <div id="session-details" class="session-details">
+        <h2 id="session-title"></h2>
+        <p id="session-description"></p>
     </div>
 
-    <div id="inlarning" class="section">
-      <h2>Introduktion & Nyinlärning</h2>
-      <h3>Dag 1:</h3>
-      <ul>
-        <li>Visa rörelse (5 min)</li>
-        <li>Repetera (5 min)</li>
-        <li>Belöna egna försök (5 min)</li>
-      </ul>
-      <h3>Dag 2:</h3>
-      <ul>
-        <li>Repetera rörelsen (5 min)</li>
-        <li>Lägg till signal (5 min)</li>
-        <li>Förstärk signalen (5 min)</li>
-      </ul>
-      <h3>Dag 3:</h3>
-      <ul>
-        <li>Träna utan lockande (7 min)</li>
-        <li>Förstärk signalen (7 min)</li>
-        <li>Byt miljö (7 min)</li>
-      </ul>
-    </div>
+    <footer>
+        <a href="index.html">&larr; Tillbaka till startsidan</a>
+    </footer>
 
-    <div id="underhall" class="section">
-      <h2>Underhåll</h2>
-      <ul>
-        <li>Enkla trick: 1 gång i veckan</li>
-        <li>Svåra kedjor: 2 gånger i månaden</li>
-      </ul>
-    </div>
+    <script>
+        const sessions = {
+            1: {
+                title: "Tillfälle 1: Introduktion och grunder",
+                description: `
+                    <ul>
+                        <li><strong>18.00–18.10:</strong> Introduktion</li>
+                        <li><strong>18.10–18.40:</strong> Grundpositioner (Front, höger sida)</li>
+                        <li><strong>18.40–19.00:</strong> Trick: Snurra höger/vänster</li>
+                        <li><strong>19.00–19.20:</strong> Teori: Shaping och belöningsplacering</li>
+                        <li><strong>19.20–19.30:</strong> Avslutning och hemläxa</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Träna in Front och höger sida samt snurra höger/vänster.
+                `
+            },
+            2: {
+                title: "Tillfälle 2: Fördjupning av positioner och rörelse",
+                description: `
+                    <ul>
+                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
+                        <li><strong>18.10–18.30:</strong> Grundpositioner: Vänster sida, bakom</li>
+                        <li><strong>18.30–18.50:</strong> Trick: Slalom framåt/bakåt</li>
+                        <li><strong>18.50–19.10:</strong> Teori: Ordförståelse och muskelminne</li>
+                        <li><strong>19.10–19.30:</strong> Avslutning och hemläxa</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Träna slalom och positionerna vänster sida och bakom.
+                `
+            },
+            3: {
+                title: "Tillfälle 3: Bygga komplexitet",
+                description: `
+                    <ul>
+                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
+                        <li><strong>18.10–18.30:</strong> Trick: Backa</li>
+                        <li><strong>18.30–18.50:</strong> Trick: Sitt fint och buga</li>
+                        <li><strong>18.50–19.10:</strong> Kombinera positioner och trick</li>
+                        <li><strong>19.10–19.30:</strong> Teori och avslutning</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Träna korta sekvenser med kombinationer av positioner och trick.
+                `
+            },
+            4: {
+                title: "Tillfälle 4: Sätta samman rörelser och program",
+                description: `
+                    <ul>
+                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
+                        <li><strong>18.10–18.40:</strong> Kedja rörelser</li>
+                        <li><strong>18.40–19.10:</strong> Förbered program</li>
+                        <li><strong>19.10–19.30:</strong> Teori och                         feedback</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Sätt ihop en sekvens på 30-45 sekunder till musik.
+                `
+            },
+            5: {
+                title: "Tillfälle 5: Uppvisning och avslutning",
+                description: `
+                    <ul>
+                        <li><strong>18.00–18.10:</strong> Uppvärmning och repetition</li>
+                        <li><strong>18.10–19.00:</strong> Varje ekipage visar sitt program</li>
+                        <li><strong>19.00–19.20:</strong> Reflektion och feedback</li>
+                        <li><strong>19.20–19.30:</strong> Avslutning och gruppfoto</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Reflektera över kursen och planera vidare träning.
+                `
+            }
+        };
 
-    <div id="monster" class="section">
-      <h2>Förberedelse inför Mönsterinlärning</h2>
-      <ul>
-        <li>Definiera mönstret</li>
-        <li>Definiera behov</li>
-        <li>Välj plats</li>
-      </ul>
-      <h2>Mönsterinlärning & Generalisering</h2>
-      <h3>Vecka 1:</h3>
-      <p>Introducera och repetera i enkel miljö (6–7 min per dag)</p>
-      <h3>Vecka 2:</h3>
-      <p>Kedja ihop rörelser och repetera i enkel miljö (10 min per dag)</p>
-      <h3>Vecka 3:</h3>
-      <p>Koppla signal till rörelserna och börja träna med distraktion</p>
-      <h3>Vecka 4:</h3>
-      <p>Automatisera rörelserna och träna utan belöning efter varje trick</p>
-    </div>
-  </div>
+        // Visa information om valt tillfälle
+        function showSession(sessionId) {
+            const sessionDetails = document.getElementById("session-details");
+            const sessionTitle = document.getElementById("session-title");
+            const sessionDescription = document.getElementById("session-description");
 
-  <footer>
-    <p>&copy; 2024 Träningssystem för Hundar</p>
-  </footer>
+            const session = sessions[sessionId];
+            sessionTitle.innerHTML = session.title;
+            sessionDescription.innerHTML = session.description;
+
+            sessionDetails.style.display = "block";
+        }
+    </script>
 </body>
 </html>
+                        
