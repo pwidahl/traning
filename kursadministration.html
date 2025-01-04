@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,23 +53,6 @@
             background: #218838;
         }
 
-        .export-button {
-            background: #007bff;
-        }
-
-        .export-button:hover {
-            background: #0056b3;
-        }
-
-        .delete-button {
-            background: #dc3545;
-            color: white;
-        }
-
-        .delete-button:hover {
-            background: #c82333;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -86,6 +68,25 @@
         th {
             background: #f4f4f4;
         }
+
+        .delete-button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background: #c82333;
+        }
+
+        .notes-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -94,7 +95,6 @@
 
         <label for="course-name">Kursnamn:</label>
         <input type="text" id="course-name" placeholder="Ange kursens namn">
-
         <button onclick="addCourse()">Skapa kurs</button>
 
         <label for="course-select">Välj kurs:</label>
@@ -108,20 +108,16 @@
         <label for="dog-name">Hundens namn:</label>
         <input type="text" id="dog-name" placeholder="Ange hundens namn">
 
-        <label for="notes">Anteckningar:</label>
-        <textarea id="notes" rows="3" placeholder="Lägg till anteckningar om deltagaren"></textarea>
-
         <button onclick="addParticipant()">Lägg till deltagare</button>
 
         <h2>Deltagare</h2>
         <table id="participant-table">
             <thead>
                 <tr>
-                    <th>Kurs</th>
                     <th>Ägare</th>
                     <th>Hund</th>
                     <th>Anteckningar</th>
-                    <th>Ta bort</th>
+                    <th>Åtgärder</th>
                 </tr>
             </thead>
             <tbody>
@@ -129,12 +125,22 @@
             </tbody>
         </table>
 
-        <button class="export-button" onclick="exportToPDF()">Exportera till PDF</button>
+        <div id="notes-section" class="notes-container" style="display: none;">
+            <h2>Anteckningar för <span id="notes-participant"></span></h2>
+            <textarea id="new-note" rows="3" placeholder="Lägg till en ny anteckning"></textarea>
+            <button onclick="addNote()">Lägg till anteckning</button>
+            <ul id="notes-list">
+                <!-- Dynamiska anteckningar -->
+            </ul>
+        </div>
     </div>
 
     <script>
         let courses = JSON.parse(localStorage.getItem('courses')) || {};
         let participants = JSON.parse(localStorage.getItem('participants')) || {};
+
+        let selectedCourse = "";
+        let selectedParticipantIndex = null;
 
         function saveToLocalStorage() {
             localStorage.setItem('courses', JSON.stringify(courses));
@@ -171,10 +177,9 @@
         }
 
         function addParticipant() {
-            const selectedCourse = document.getElementById('course-select').value;
+            selectedCourse = document.getElementById('course-select').value;
             const ownerName = document.getElementById('owner-name').value.trim();
             const dogName = document.getElementById('dog-name').value.trim();
-            const notes = document.getElementById('notes').value.trim();
 
             if (!selectedCourse) {
                 alert("Välj en kurs!");
@@ -186,65 +191,75 @@
             }
 
             participants[selectedCourse] = participants[selectedCourse] || [];
-            participants[selectedCourse].push({ owner: ownerName, dog: dogName, notes });
+            participants[selectedCourse].push({ owner: ownerName, dog: dogName, notes: [] });
             saveToLocalStorage();
-            renderParticipants(selectedCourse);
+            renderParticipants();
 
             document.getElementById('owner-name').value = '';
             document.getElementById('dog-name').value = '';
-            document.getElementById('notes').value = '';
         }
 
-        function renderParticipants(course) {
+        function renderParticipants() {
             const tableBody = document.getElementById('participant-table').querySelector('tbody');
             tableBody.innerHTML = '';
 
-            const selectedParticipants = participants[course] || [];
+            selectedCourse = document.getElementById('course-select').value;
+            const selectedParticipants = participants[selectedCourse] || [];
+
             selectedParticipants.forEach((participant, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${course}</td>
                     <td>${participant.owner}</td>
                     <td>${participant.dog}</td>
-                    <td>${participant.notes}</td>
-                    <td><button class="delete-button" onclick="deleteParticipant('${course}', ${index})">Ta bort</button></td>
+                    <td>${participant.notes.length} anteckningar</td>
+                    <td>
+                        <button onclick="viewNotes(${index})">Visa anteckningar</button>
+                        <button class="delete-button" onclick="deleteParticipant(${index})">Ta bort</button>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
-        function deleteParticipant(course, index) {
-            participants[course].splice(index, 1);
-            saveToLocalStorage();
-            renderParticipants(course);
+        function viewNotes(index) {
+            selectedParticipantIndex = index;
+            const participant = participants[selectedCourse][index];
+
+            document.getElementById('notes-section').style.display = 'block';
+            document.getElementById('notes-participant').innerText = `${participant.owner} (${participant.dog})`;
+
+            const notesList = document.getElementById('notes-list');
+            notesList.innerHTML = '';
+
+            participant.notes.forEach(note => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${note.date}: ${note.text}`;
+                notesList.appendChild(listItem);
+            });
         }
 
-        function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            const selectedCourse = document.getElementById('course-select').value;
-            const courseName = selectedCourse;
-
-            doc.text(`Deltagarlista: ${courseName}`, 10, 10);
-
-            if (participants[selectedCourse]) {
-                participants[selectedCourse].forEach((participant, index) => {
-                    doc.text(
-                        `${index + 1}. Ägare: ${participant.owner}, Hund: ${participant.dog}, Anteckningar: ${participant.notes}`,
-                        10,
-                        20 + index * 10
-                    );
-                });
+        function addNote() {
+            const noteText = document.getElementById('new-note').value.trim();
+            if (!noteText) {
+                alert("Anteckningen kan inte vara tom!");
+                return;
             }
 
-            doc.save(`${courseName}.pdf`);
+            const date = new Date().toLocaleString();
+            participants[selectedCourse][selectedParticipantIndex].notes.push({ text: noteText, date });
+            saveToLocalStorage();
+            viewNotes(selectedParticipantIndex);
+            document.getElementById('new-note').value = '';
         }
 
-        document.getElementById('course-select').addEventListener('change', function () {
-            const selectedCourse = this.value;
-            renderParticipants(selectedCourse);
-        });
+        function deleteParticipant(index) {
+            participants[selectedCourse].splice(index, 1);
+            saveToLocalStorage();
+            renderParticipants();
+            document.getElementById('notes-section').style.display = 'none';
+        }
+
+        document.getElementById('course-select').addEventListener('change', renderParticipants);
 
         renderCourses();
     </script>
