@@ -1,36 +1,129 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mönsterinlärning</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      padding: 20px;
-    }
-
-    a {
-      color: #87CEEB;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avancerad Kurs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .session-list {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .session-content {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <h1>Mönsterinlärning</h1>
-  <h3>Vecka 1:</h3>
-  <p>Introducera och repetera i enkel miljö (6–7 min per dag)</p>
-  <h3>Vecka 2:</h3>
-  <p>Kedja ihop rörelser och repetera i enkel miljö (10 min per dag)</p>
-  <h3>Vecka 3:</h3>
-  <p>Koppla signal till rörelserna och börja träna med distraktion</p>
-  <h3>Vecka 4:</h3>
-  <p>Automatisera rörelserna och träna utan belöning efter varje trick</p>
-  <p><a href="index.html">Tillbaka till startsidan</a></p>
+    <h1>Avancerad Kurs</h1>
+    <p>Klicka på ett tillfälle för att se detaljer:</p>
+    <div class="session-list">
+        <button onclick="showSession(1)">Tillfälle 1</button>
+        <button onclick="showSession(2)">Tillfälle 2</button>
+        <button onclick="showSession(3)">Tillfälle 3</button>
+        <button onclick="showSession(4)">Tillfälle 4</button>
+        <button onclick="showSession(5)">Tillfälle 5</button>
+    </div>
+    <div id="session-content" class="session-content hidden"></div>
+
+    <script>
+        const courseData = {
+            1: {
+                title: "Tillfälle 1: Avståndsarbete och precision",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition av grundrörelser",
+                    "18.10–18.30: Avståndsarbete: Front och cirkla på avstånd",
+                    "18.30–19.00: Rörelser med större avstånd: Backa från föraren och komma tillbaka i position",
+                    "19.00–19.20: Teori: Belöning på avstånd och bibehållen fokus",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Träna avståndsarbete och precision i rörelser på längre avstånd."
+            },
+            2: {
+                title: "Tillfälle 2: Avancerade kombinationer",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition av avståndsarbete",
+                    "18.10–18.30: Praktik: Kedja flera positioner i rörelse (t.ex. front → höger sida → bakom → vänster sida)",
+                    "18.30–19.00: Praktik: Introducera trick som kräver hög koncentration, t.ex. åtta runt förarens ben",
+                    "19.00–19.20: Teori: Viktiga detaljer för avancerad kedjning och flyt",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Träna avancerade kombinationer och kedjor med fokus på flyt."
+            },
+            3: {
+                title: "Tillfälle 3: Koreografi med variation",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition av kombinationer",
+                    "18.10–18.30: Praktik: Variera koreografi med olika tempon och riktningar",
+                    "18.30–19.00: Praktik: Skapa en kort sekvens med minst 8 trick eller rörelser",
+                    "19.00–19.20: Teori: Hur man skapar variation och dynamik i program",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Skapa och träna en sekvens med variation i tempo och riktning."
+            },
+            4: {
+                title: "Tillfälle 4: Publikträning och uppvisningsfokus",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition av koreografi",
+                    "18.10–18.30: Praktik: Träna med publik (övriga deltagare som störning)",
+                    "18.30–19.00: Praktik: Lägg till showelement som avslutningsposer och interaktion",
+                    "19.00–19.20: Teori: Hur man behåller hundens fokus under uppvisning",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Träna uppvisningsmoment med publik och störningar."
+            },
+            5: {
+                title: "Tillfälle 5: Uppvisning och feedback",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition",
+                    "18.10–19.00: Varje ekipage visar sitt program med publik",
+                    "19.00–19.20: Reflektion och detaljerad feedback",
+                    "19.20–19.30: Avslutning och gruppfoto"
+                ],
+                homework: "Planera vidare träning och förbered för framtida uppvisningar."
+            }
+        };
+
+        function showSession(sessionId) {
+            const session = courseData[sessionId];
+            const sessionContent = document.getElementById("session-content");
+            
+            sessionContent.innerHTML = `
+                <h2>${session.title}</h2>
+                <h3>Tidsplan:</h3>
+                <ul>
+                    ${session.schedule.map(item => `<li>${item}</li>`).join("")}
+                </ul>
+                <h3>Hemläxa:</h3>
+                <p>${session.homework}</p>
+            `;
+            sessionContent.classList.remove("hidden");
+        }
+    </script>
 </body>
 </html>
