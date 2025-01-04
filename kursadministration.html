@@ -4,134 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Anpassningar för bättre layout */
-        .form-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: auto;
+            background: #f9f9f9;
+            color: #333;
         }
 
-        .form-section h2 {
+        h1, h2 {
+            text-align: center;
+            color: #444;
+        }
+
+        .container {
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
             margin-bottom: 15px;
-            font-size: 1.4rem;
         }
 
-        .form-section form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        .form-section input,
-        .form-section textarea,
-        .form-section select,
-        .form-section button {
+        input, select, button {
             width: 100%;
             padding: 10px;
-            font-size: 1rem;
+            margin: 5px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 1rem;
         }
 
-        .form-section button {
-            background: #6a11cb;
-            color: #fff;
-            font-weight: bold;
+        button {
+            background: #28a745;
+            color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease;
         }
 
-        .form-section button:hover {
-            background: #2575fc;
+        button:hover {
+            background: #218838;
         }
 
-        .course-details {
+        .delete-button {
+            background: #dc3545;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .delete-button:hover {
+            background: #c82333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
             padding: 10px;
-            background: #f9f4ef;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
         }
 
-        .course-details h3 {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .course-links {
-            text-align: center;
-            margin-top: 30px;
+        th {
+            background: #f4f4f4;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Kursadministration</h1>
-        <p>Administrera kurser, deltagare och analysera kursinformation.</p>
-
-        <!-- Lägg till ny kurs -->
-        <div class="form-section">
-            <h2>Lägg till ny kurs</h2>
-            <form id="add-course-form">
-                <input type="text" id="course-name" placeholder="Kursnamn" required>
-                <textarea id="course-description" placeholder="Beskriv kursen"></textarea>
-                <label for="course-start-date">Kursstart:</label>
-                <input type="date" id="course-start-date" required>
-                <label for="course-sessions">Antal tillfällen:</label>
-                <input type="number" id="course-sessions" min="1" placeholder="Antal tillfällen" required>
-                <button type="submit">Lägg till kurs</button>
-            </form>
-        </div>
-
-        <!-- Kurser -->
-        <div class="course-details">
-            <h2>Kurser</h2>
-            <ul id="course-list"></ul>
-        </div>
-
-        <!-- Hantera deltagare -->
-        <div class="form-section">
-            <h2>Hantera deltagare</h2>
-            <form id="add-participant-form">
-                <select id="course-select" required>
-                    <option value="">Välj en kurs</option>
-                </select>
-                <input type="text" id="participant-name" placeholder="Deltagarens namn" required>
-                <textarea id="participant-progress" placeholder="Beskriv framsteg"></textarea>
-                <button type="submit">Lägg till deltagare</button>
-            </form>
-        </div>
-
-        <!-- Deltagare per kurs -->
-        <div class="course-details">
-            <h2>Deltagare per kurs</h2>
-            <div id="participant-details"></div>
-        </div>
-
-        <!-- Sammanställning -->
-        <div class="form-section">
-            <h2>Sammanställning</h2>
-            <label for="summary-course-select">Välj kurs för sammanställning:</label>
-            <select id="summary-course-select">
-                <option value="all">Alla kurser</option>
+        <div class="form-group">
+            <label for="course-select">Välj kurs:</label>
+            <select id="course-select">
+                <option value="Nybörjarkurs">Nybörjarkurs</option>
+                <option value="Fortsättningskurs">Fortsättningskurs</option>
+                <option value="Avancerad kurs">Avancerad kurs</option>
             </select>
-            <button onclick="generateSummary()">Generera Sammanställning</button>
-            <textarea id="summary-output" rows="10" readonly></textarea>
-            <button onclick="exportToPDF()">Exportera som PDF</button>
-            <button onclick="exportToWord()">Exportera som Word</button>
         </div>
+
+        <div class="form-group">
+            <label for="participant-name">Deltagarens namn:</label>
+            <input type="text" id="participant-name" placeholder="Ange deltagarens namn">
+        </div>
+
+        <button onclick="addParticipant()">Lägg till deltagare</button>
+
+        <h2>Deltagare</h2>
+        <table id="participant-table">
+            <thead>
+                <tr>
+                    <th>Namn</th>
+                    <th>Kurs</th>
+                    <th>Åtgärd</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamiskt innehåll -->
+            </tbody>
+        </table>
     </div>
 
-    <footer>
-        <a href="index.html">&larr; Tillbaka till startsidan</a>
-    </footer>
-
     <script>
-        // JavaScript-funktioner (samma som tidigare)
+        const participants = JSON.parse(localStorage.getItem('participants')) || [];
+
+        function renderTable() {
+            const tableBody = document.getElementById('participant-table').querySelector('tbody');
+            tableBody.innerHTML = '';
+
+            participants.forEach((participant, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${participant.name}</td>
+                    <td>${participant.course}</td>
+                    <td>
+                        <button class="delete-button" onclick="deleteParticipant(${index})">Ta bort</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function addParticipant() {
+            const nameInput = document.getElementById('participant-name');
+            const courseSelect = document.getElementById('course-select');
+            const name = nameInput.value.trim();
+            const course = courseSelect.value;
+
+            if (!name) {
+                alert('Ange deltagarens namn.');
+                return;
+            }
+
+            participants.push({ name, course });
+            localStorage.setItem('participants', JSON.stringify(participants));
+            nameInput.value = '';
+            renderTable();
+        }
+
+        function deleteParticipant(index) {
+            participants.splice(index, 1);
+            localStorage.setItem('participants', JSON.stringify(participants));
+            renderTable();
+        }
+
+        // Initiera tabellen vid sidladdning
+        renderTable();
     </script>
 </body>
 </html>
