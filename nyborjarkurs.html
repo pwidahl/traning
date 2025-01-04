@@ -6,7 +6,7 @@
     <title>Nybörjarkurs</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Mobilanpassning och tydligare layout */
+        /* Mobilanpassning och layout */
         .course-links {
             display: flex;
             flex-wrap: wrap;
@@ -49,15 +49,24 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 5px;
         }
 
         ul li .content {
             flex: 1;
-            margin-left: 10px;
+            margin-top: 5px;
             font-size: 0.95rem;
             color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 0.9rem;
+            resize: vertical;
         }
 
         button {
@@ -74,15 +83,6 @@
             background: #1b4d9c;
         }
 
-        textarea {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 0.9rem;
-            resize: vertical;
-        }
-
         @media (max-width: 768px) {
             .course-links a {
                 width: 100px;
@@ -93,18 +93,13 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
-
-            ul li .content {
-                margin-left: 0;
-                margin-top: 5px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Nybörjarkurs</h1>
-        <p>Klicka på ett tillfälle för att se tidsplanen och göra anteckningar:</p>
+        <p>Klicka på ett tillfälle för att se och justera innehållet:</p>
         
         <div class="course-links">
             <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
@@ -120,7 +115,7 @@
             <ul id="schedule-list"></ul>
             <h3>Anteckningar:</h3>
             <textarea id="session-notes" rows="5" placeholder="Lägg till anteckningar här..."></textarea>
-            <button onclick="saveSession()">Spara anteckningar</button>
+            <button onclick="saveSession()">Spara ändringar</button>
         </div>
     </div>
     
@@ -176,14 +171,23 @@
             scheduleList.innerHTML = ""; // Rensa tidigare lista
             const schedule = sessions[sessionId].schedule;
 
-            schedule.forEach((item) => {
+            schedule.forEach((item, index) => {
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>${item.time}</strong>
-                    <div class="content">${item.content}</div>
+                    <textarea 
+                        class="content" 
+                        onchange="updateContent(${sessionId}, ${index}, this.value)"
+                    >${item.content}</textarea>
                 `;
                 scheduleList.appendChild(li);
             });
+        }
+
+        // Uppdatera innehållet i tidsplanen
+        function updateContent(sessionId, index, value) {
+            sessions[sessionId].schedule[index].content = value;
+            saveToLocalStorage();
         }
 
         // Spara anteckningar
@@ -192,7 +196,7 @@
             const updatedNotes = document.getElementById("session-notes").value;
             sessions[sessionId].notes = updatedNotes;
             saveToLocalStorage();
-            alert("Anteckningar sparade!");
+            alert("Ändringar sparade!");
         }
     </script>
 </body>
