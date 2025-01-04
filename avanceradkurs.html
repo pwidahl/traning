@@ -5,240 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avancerad kurs</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <style>
-    
-    .back-link {
-    display: inline-block;
-    margin-bottom: 15px;
-    text-decoration: none;
-    color: #666; /* Diskret grå färg */
-    font-size: 1rem;
-    padding: 8px 12px;
-    border: 0px solid #ccc; /* Ljusgrå ram */
-    border-radius: 5px; /* Rundade hörn */
-    transition: background 0.3s, color 0.3s, border-color 0.3s;
-}
-
-.back-link:hover {
-    background: #f2f2f2; /* Ljusgrå bakgrund vid hover */
-    color: #333; /* Mörkare grå text vid hover */
-    border-color: #999; /* Mörkare grå ram vid hover */
-}
-    /* Mobiloptimering av boxarna */
-    ul li {
-        background: #fff;
-        margin-bottom: 10px;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        max-width: 100%;
-        box-sizing: border-box; /* Förhindra att boxarna går utanför ramen */
-    }
-
-    ul li strong {
-        font-size: 0.9rem;
-        color: #333;
-        display: block; /* För att säkerställa att tiden visas tydligt */
-    }
-
-    textarea {
-        width: 100%;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-        font-size: 0.9rem;
-        resize: vertical;
-        box-sizing: border-box; /* Säkerställ att textarea hålls inom ramarna */
-    }
-
-    /* Responsiv design */
-    @media (max-width: 768px) {
-        ul li {
-            padding: 10px;
-            gap: 8px;
-        }
-
-        textarea {
-            font-size: 0.85rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        ul li {
-            padding: 8px;
-            gap: 6px;
-        }
-
-        textarea {
-            font-size: 0.8rem;
-        }
-    }
-        /* Grundlayout */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f9f4ef;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        h1, h2, h3 {
-            text-align: center;
-            color: #333;
-        }
-
-        p {
-            text-align: center;
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        /* Kurslänkar */
-        .course-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .course-links a {
-            display: block;
-            text-align: center;
-            background: #6a11cb;
+        .generate-pdf-button {
+            background: #28a745;
             color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        .course-links a:hover {
-            background: #2575fc;
-        }
-
-        /* Sessiondetaljer */
-        .session-details {
-            margin-top: 20px;
-        }
-
-        ul {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        ul li {
-            background: #fff;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        ul li strong {
-            font-size: 0.9rem;
-            color: #333;
-        }
-
-        textarea {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 0.9rem;
-            resize: vertical;
-        }
-
-        button {
-            font-size: 0.95rem;
-            padding: 10px;
             border: none;
+            padding: 10px;
             border-radius: 5px;
+            margin-top: 15px;
             cursor: pointer;
-            transition: background 0.3s;
+            font-size: 0.95rem;
             width: 100%;
         }
 
-        .save-button {
-            background: #2575fc;
-            color: white;
-        }
-
-        .save-button:hover {
-            background: #1b4d9c;
-        }
-
-        .reset-button {
-            background: #e63946;
-            color: white;
-            margin-top: 20px;
-        }
-
-        .reset-button:hover {
-            background: #d62828;
-        }
-
-        /* Mobiloptimering */
-        @media (max-width: 768px) {
-            .course-links a {
-                font-size: 0.85rem;
-                padding: 8px;
-            }
-
-            ul li {
-                padding: 10px;
-                gap: 8px;
-            }
-
-            textarea {
-                font-size: 0.85rem;
-            }
-
-            button {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            p {
-                font-size: 0.85rem;
-            }
-
-            .course-links a {
-                font-size: 0.8rem;
-                padding: 7px;
-            }
-
-            ul li {
-                padding: 8px;
-                gap: 6px;
-            }
-
-            textarea {
-                font-size: 0.8rem;
-            }
-
-            button {
-                font-size: 0.85rem;
-                padding: 7px;
-            }
+        .generate-pdf-button:hover {
+            background: #218838;
         }
     </style>
 </head>
@@ -265,8 +47,9 @@
         </div>
 
         <button class="reset-button" onclick="resetToDefault()">Återställ till grund</button>
+        <button class="generate-pdf-button" onclick="generatePDF()">Generera PDF</button>
     </div>
-            <a href="javascript:history.back()" class="back-link">← Tillbaka</a>
+    
     <footer>
         <p style="text-align: center; margin-top: 20px;">&copy; 2025 Kursadministration</p>
     </footer>
@@ -274,13 +57,56 @@
     <script>
         const defaultSessions = {
             1: {
-                title: "Tillfälle 1: Introduktion och grunder",
+                title: "Tillfälle 1: Avancerade positioner och precision",
                 schedule: [
-                    { time: "18.00–18.10", content: "Introduktion" },
-                    { time: "18.10–18.40", content: "Grundpositioner (Front, höger sida)" },
-                    { time: "18.40–19.00", content: "Trick: Snurra höger/vänster" },
-                    { time: "19.00–19.20", content: "Teori: Shaping och belöningsplacering" },
+                    { time: "18.00–18.10", content: "Introduktion och repetition av tidigare nivåer" },
+                    { time: "18.10–18.40", content: "Avancerade positioner: Mellan, bakom i rörelse" },
+                    { time: "18.40–19.00", content: "Trick: Backa i olika mönster (linje, cirkel)" },
+                    { time: "19.00–19.20", content: "Teori: Timing och övergångar i avancerade sekvenser" },
                     { time: "19.20–19.30", content: "Avslutning och hemläxa" }
+                ],
+                notes: ""
+            },
+            2: {
+                title: "Tillfälle 2: Programuppbyggnad och övergångar",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition av avancerade positioner" },
+                    { time: "18.10–18.40", content: "Övergångar mellan avancerade positioner" },
+                    { time: "18.40–19.00", content: "Kombinera avancerade trick med positioner" },
+                    { time: "19.00–19.20", content: "Teori: Bygga ett sammanhängande program" },
+                    { time: "19.20–19.30", content: "Avslutning och feedback" }
+                ],
+                notes: ""
+            },
+            3: {
+                title: "Tillfälle 3: Förfining och detaljer",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition av föregående moment" },
+                    { time: "18.10–18.40", content: "Förfining av rörelser och tajming" },
+                    { time: "18.40–19.00", content: "Lägg till små detaljer i trick och övergångar" },
+                    { time: "19.00–19.20", content: "Teori: Viktiga detaljer för flyt och precision" },
+                    { time: "19.20–19.30", content: "Avslutning och hemläxa" }
+                ],
+                notes: ""
+            },
+            4: {
+                title: "Tillfälle 4: Programkörning och analys",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition av tidigare moment" },
+                    { time: "18.10–18.40", content: "Körning av programdelar och analys" },
+                    { time: "18.40–19.00", content: "Feedback på individuella program" },
+                    { time: "19.00–19.20", content: "Teori: Förbättring genom feedback och analys" },
+                    { time: "19.20–19.30", content: "Avslutning och förberedelse inför uppvisning" }
+                ],
+                notes: ""
+            },
+            5: {
+                title: "Tillfälle 5: Uppvisning och avslutning",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och förberedelse" },
+                    { time: "18.10–19.00", content: "Uppvisning av individuella program" },
+                    { time: "19.00–19.20", content: "Reflektion och feedback på programmen" },
+                    { time: "19.20–19.30", content: "Avslutning och gruppfoto" }
                 ],
                 notes: ""
             }
@@ -297,6 +123,7 @@
             document.getElementById("session-title").innerText = session.title;
             document.getElementById("session-notes").value = session.notes || "";
             updateSchedule(sessionId);
+            document.getElementById("session-details").dataset.currentSessionId = sessionId;
             document.getElementById("session-details").style.display = "block";
         }
 
@@ -339,8 +166,6 @@
                 location.reload();
             }
         }
-        
-
     </script>
 </body>
 </html>
