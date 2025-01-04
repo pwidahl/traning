@@ -3,8 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background: #f9f4ef; /* Ljus beige bakgrund */
-    color: #5a5a5a; /* Mjuk grå textfärg */
+    background: #f9f4ef;
+    color: #5a5a5a;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +19,7 @@ body {
 .container {
     width: 100%;
     max-width: 600px;
-    background: #ffffff; /* Vit bakgrund för huvudytan */
+    background: #ffffff;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -30,7 +30,7 @@ body {
 h1, h2 {
     font-size: 1.8rem;
     margin-bottom: 10px;
-    color: #4a4a4a; /* Mörkare beige/grå ton */
+    color: #4a4a4a;
 }
 
 h2 {
@@ -40,89 +40,63 @@ h2 {
 
 p {
     font-size: 1rem;
-    color: #6a6a6a; /* Ljusare gråton */
+    color: #6a6a6a;
     margin-bottom: 20px;
 }
 
-/* Formulär och inputs */
-form {
+/* Kurslänkar */
+.course-links {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-input, textarea, select, button {
+.course-links a {
+    display: inline-block;
+    padding: 10px 20px;
     font-size: 1rem;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-textarea {
-    resize: vertical;
-    min-height: 50px;
-}
-
-button {
-    background: #e4dace; /* Mjuk beige */
-    color: #4a4a4a;
     font-weight: bold;
-    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
-button:hover {
-    background: #d8c9b9; /* Mörkare beige */
+.course-links a:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
 }
 
-button:active {
-    background: #cfc1ac; /* Ännu mörkare beige */
+.course-links a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Listor */
-ul {
-    list-style: none;
-    padding: 0;
-    text-align: left;
+/* Footer */
+footer {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #7a7a7a;
 }
 
-ul li {
-    padding: 5px 0;
-    border-bottom: 1px solid #eee;
-    font-size: 1rem;
-}
-
-/* Textarea för sammanställning */
-#summary-output {
-    font-family: monospace;
-    white-space: pre-wrap;
-    background: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    box-sizing: border-box;
-    min-height: 100px;
-}
-
-/* Knappar och länkar */
-a {
+footer a {
+    color: #6a6a6a;
     text-decoration: none;
-    color: #4a4a4a;
     font-weight: bold;
 }
 
-a:hover {
+footer a:hover {
     text-decoration: underline;
 }
 
 /* Responsiv design */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-
     h1 {
         font-size: 1.6rem;
     }
@@ -135,21 +109,9 @@ a:hover {
         font-size: 0.9rem;
     }
 
-    input, textarea, select, button {
+    .course-links a {
         font-size: 0.9rem;
-        padding: 8px;
-    }
-
-    button {
-        font-size: 0.9rem;
-    }
-
-    ul li {
-        font-size: 0.9rem;
-    }
-
-    #summary-output {
-        font-size: 0.9rem;
+        padding: 10px 15px;
     }
 }
 
@@ -162,20 +124,12 @@ a:hover {
         font-size: 1.2rem;
     }
 
-    input, textarea, select, button {
-        font-size: 0.8rem;
-        padding: 6px;
-    }
-
-    button {
+    p {
         font-size: 0.8rem;
     }
 
-    ul li {
+    .course-links a {
         font-size: 0.8rem;
-    }
-
-    #summary-output {
-        font-size: 0.8rem;
+        padding: 8px 12px;
     }
 }
