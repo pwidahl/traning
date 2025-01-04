@@ -66,6 +66,12 @@
         th {
             background: #f4f4f4;
         }
+
+        .message {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -79,7 +85,7 @@
 
         <!-- Välj kurs -->
         <label for="course-select">Välj kurs:</label>
-        <select id="course-select">
+        <select id="course-select" onchange="renderParticipants()">
             <option value="">-- Välj en kurs --</option>
         </select>
 
@@ -89,16 +95,19 @@
         <button onclick="addParticipant()">Lägg till deltagare</button>
 
         <!-- Visa deltagare -->
-        <h2>Sammanställning</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Kurs</th>
-                    <th>Deltagare</th>
-                </tr>
-            </thead>
-            <tbody id="participant-summary"></tbody>
-        </table>
+        <h2>Deltagare</h2>
+        <div id="participant-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Deltagare</th>
+                        <th>Åtgärder</th>
+                    </tr>
+                </thead>
+                <tbody id="participant-table"></tbody>
+            </table>
+            <p id="no-participants" class="message" style="display: none;">Inga deltagare i denna kurs.</p>
+        </div>
     </div>
 
     <script>
@@ -122,11 +131,10 @@
             courses[courseName] = [];
             document.getElementById("course-name").value = "";
             renderCourses();
-            renderSummary();
             alert(`Kurs "${courseName}" har skapats!`);
         }
 
-        // Rendera kurser i dropdown
+        // Rendera alla kurser i dropdown
         function renderCourses() {
             const courseSelect = document.getElementById("course-select");
             courseSelect.innerHTML = '<option value="">-- Välj en kurs --</option>';
@@ -138,7 +146,7 @@
             });
         }
 
-        // Lägg till deltagare till en kurs
+        // Lägg till en ny deltagare
         function addParticipant() {
             const courseName = document.getElementById("course-select").value;
             const participantName = document.getElementById("participant-name").value.trim();
@@ -155,31 +163,44 @@
 
             courses[courseName].push(participantName);
             document.getElementById("participant-name").value = "";
-            renderSummary();
+            renderParticipants();
             alert(`Deltagaren "${participantName}" har lagts till i kursen "${courseName}"!`);
         }
 
-        // Rendera sammanställning av deltagare
-        function renderSummary() {
-            const participantSummary = document.getElementById("participant-summary");
-            participantSummary.innerHTML = "";
+        // Rendera deltagare för vald kurs
+        function renderParticipants() {
+            const courseName = document.getElementById("course-select").value;
+            const participantTable = document.getElementById("participant-table");
+            const noParticipantsMessage = document.getElementById("no-participants");
 
-            Object.keys(courses).forEach(courseName => {
-                courses[courseName].forEach(participant => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${courseName}</td>
-                        <td>${participant}</td>
-                    `;
-                    participantSummary.appendChild(row);
-                });
+            participantTable.innerHTML = "";
+
+            if (!courseName || !courses[courseName] || courses[courseName].length === 0) {
+                noParticipantsMessage.style.display = "block";
+                return;
+            }
+
+            noParticipantsMessage.style.display = "none";
+
+            courses[courseName].forEach((participant, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${participant}</td>
+                    <td><button onclick="deleteParticipant('${courseName}', ${index})">Ta bort</button></td>
+                `;
+                participantTable.appendChild(row);
             });
+        }
+
+        // Ta bort en deltagare
+        function deleteParticipant(courseName, index) {
+            courses[courseName].splice(index, 1);
+            renderParticipants();
         }
 
         // Initiera sidan
         function init() {
             renderCourses();
-            renderSummary();
         }
 
         init();
