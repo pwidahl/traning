@@ -4,125 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortsättningskurs</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        .session-list {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .session-content {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .hidden {
-            display: none;
-        }
-        button {
-            margin: 5px;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Fortsättningskurs</h1>
-    <p>Klicka på ett tillfälle för att se detaljer:</p>
-    <div class="session-list">
-        <button onclick="showSession(1)">Tillfälle 1</button>
-        <button onclick="showSession(2)">Tillfälle 2</button>
-        <button onclick="showSession(3)">Tillfälle 3</button>
-        <button onclick="showSession(4)">Tillfälle 4</button>
-        <button onclick="showSession(5)">Tillfälle 5</button>
+    <div class="container">
+        <h1>Fortsättningskurs</h1>
+        <p>Klicka på ett tillfälle för att se detaljer:</p>
+        
+        <div class="course-links">
+            <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
+            <a href="#session2" onclick="showSession(2)">Tillfälle 2</a>
+            <a href="#session3" onclick="showSession(3)">Tillfälle 3</a>
+            <a href="#session4" onclick="showSession(4)">Tillfälle 4</a>
+            <a href="#session5" onclick="showSession(5)">Tillfälle 5</a>
+        </div>
+        
+        <div id="session-details" class="session-details" style="margin-top: 20px;">
+            <h2 id="session-title"></h2>
+            <p id="session-description"></p>
+        </div>
     </div>
-    <div id="session-content" class="session-content hidden"></div>
+    
+    <footer>
+        <a href="index.html">&larr; Tillbaka till startsidan</a>
+    </footer>
 
     <script>
-        const courseData = {
+        const sessions = {
             1: {
-                title: "Tillfälle 1: Fördjupning av grundpositioner och flyt",
-                schedule: [
-                    "18.00–18.10: Uppvärmning",
-                    "18.10–18.30: Rörelse i positioner (höger/vänster sida i rörelse, bakom i rörelse)",
-                    "18.30–19.00: Nya trick: Cirkla runt föraren och backa runt föraren",
-                    "19.00–19.20: Teori: Fördjupning av shaping",
-                    "19.20–19.30: Avslutning och hemläxa"
-                ],
-                homework: "Träna rörelse i positioner och cirkla/backa runt föraren."
+                title: "Tillfälle 1: Fördjupning av grunder",
+                description: `
+                    <ul>
+                        <li>18.00–18.10: Uppvärmning</li>
+                        <li>18.10–18.40: Precision i positioner</li>
+                        <li>18.40–19.00: Trick: Cirkla runt föraren</li>
+                        <li>19.00–19.20: Teori: Belöningsplacering</li>
+                        <li>19.20–19.30: Hemläxa</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Träna cirklar och flyt mellan positioner.
+                `
             },
             2: {
-                title: "Tillfälle 2: Kedjning av trick och positioner",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–18.40: Kedja trick och positioner: Mellan benen → Cirkla → Front → Snurra höger/vänster",
-                    "18.40–19.00: Nya trick: Korsa framtassarna och stå på bakbenen",
-                    "19.00–19.20: Teori: Kedjning och timing",
-                    "19.20–19.30: Avslutning och hemläxa"
-                ],
-                homework: "Träna på att kedja tre trick i följd."
+                title: "Tillfälle 2: Kedjning av beteenden",
+                description: `
+                    <ul>
+                        <li>18.00–18.10: Uppvärmning och repetition</li>
+                        <li>18.10–18.40: Kedja trick och positioner</li>
+                        <li>18.40–19.00: Avståndsarbete</li>
+                        <li>19.00–19.20: Teori: Timing och kedjning</li>
+                        <li>19.20–19.30: Avslutning och hemläxa</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Kedja tre trick och arbeta på avstånd.
+                `
             },
             3: {
-                title: "Tillfälle 3: Störningsträning och övergångar",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–18.30: Störningsträning med leksaker, publik eller rörelse",
-                    "18.30–19.00: Förbättra övergångar mellan trick och positioner",
-                    "19.00–19.20: Teori: Generalisering och störningsträning",
-                    "19.20–19.30: Avslutning och hemläxa"
-                ],
-                homework: "Träna trick och övergångar i olika miljöer."
+                title: "Tillfälle 3: Dynamik och variation",
+                description: `
+                    <ul>
+                        <li>18.00–18.10: Uppvärmning</li>
+                        <li>18.10–18.30: Variation i tempo</li>
+                        <li>18.30–18.50: Trick: Backa runt föraren</li>
+                        <li>18.50–19.10: Teori: Skapa variation i program</li>
+                        <li>19.10–19.30: Hemläxa</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Träna variation och dynamik i sekvenser.
+                `
             },
             4: {
-                title: "Tillfälle 4: Koreografi och programbygge",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–18.40: Sätt ihop längre sekvenser (5-6 trick i följd)",
-                    "18.40–19.00: Finjustera trick och öva med störningar",
-                    "19.00–19.20: Teori: Skapa koreografi med musik",
-                    "19.20–19.30: Avslutning och hemläxa"
-                ],
-                homework: "Sätt ihop en sekvens på 30-45 sekunder till musik."
+                title: "Tillfälle 4: Sätta ihop program",
+                description: `
+                    <ul>
+                        <li>18.00–18.10: Uppvärmning och repetition</li>
+                        <li>18.10–18.40: Skapa sekvenser</li>
+                        <li>18.40–19.10: Testa sekvenser med musik</li>
+                        <li>19.10–19.30: Feedback och justeringar</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Finslipa ett 1-minutsprogram.
+                `
             },
             5: {
-                title: "Tillfälle 5: Program och uppvisning",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–19.00: Varje ekipage visar sitt program",
-                    "19.00–19.20: Reflektion och feedback",
-                    "19.20–19.30: Avslutning och gruppfoto"
-                ],
-                homework: "Planera vidare träning och reflektera över kursen."
+                title: "Tillfälle 5: Uppvisning",
+                description: `
+                    <ul>
+                        <li>18.00–18.10: Uppvärmning</li>
+                        <li>18.10–19.00: Visa program</li>
+                        <li>19.00–19.20: Gruppfeedback</li>
+                        <li>19.20–19.30: Avslutning</li>
+                    </ul>
+                    <strong>Hemläxa:</strong> Planera vidare träning.
+                `
             }
         };
 
         function showSession(sessionId) {
-            const session = courseData[sessionId];
-            const sessionContent = document.getElementById("session-content");
-            
-            sessionContent.innerHTML = `
-                <h2>${session.title}</h2>
-                <h3>Tidsplan:</h3>
-                <ul>
-                    ${session.schedule.map(item => `<li>${item}</li>`).join("")}
-                </ul>
-                <h3>Hemläxa:</h3>
-                <p>${session.homework}</p>
-            `;
-            sessionContent.classList.remove("hidden");
+            const sessionDetails = document.getElementById("session-details");
+            const sessionTitle = document.getElementById("session-title");
+            const sessionDescription = document.getElementById("session-description");
+
+            const session = sessions[sessionId];
+            sessionTitle.innerHTML = session.title;
+            sessionDescription.innerHTML = session.description;
+
+            sessionDetails.style.display = "block";
         }
     </script>
 </body>
