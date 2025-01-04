@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Nybörjarkurs</h1>
-        <p>Klicka på ett tillfälle för att se detaljer:</p>
+        <p>Klicka på ett tillfälle för att se detaljer eller justera innehållet:</p>
         
         <div class="course-links">
             <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
@@ -19,9 +19,15 @@
             <a href="#session5" onclick="showSession(5)">Tillfälle 5</a>
         </div>
         
-        <div id="session-details" class="session-details" style="margin-top: 20px;">
+        <div id="session-details" class="session-details" style="margin-top: 20px; display: none;">
             <h2 id="session-title"></h2>
-            <p id="session-description"></p>
+            <div>
+                <textarea id="session-description" rows="10" style="width: 100%;"></textarea>
+                <button onclick="saveSession()">Spara ändringar</button>
+            </div>
+            <h3>Anteckningar:</h3>
+            <textarea id="session-notes" rows="5" style="width: 100%;" placeholder="Lägg till anteckningar här..."></textarea>
+            <button onclick="saveNotes()">Spara anteckningar</button>
         </div>
     </div>
     
@@ -30,7 +36,8 @@
     </footer>
 
     <script>
-        const sessions = {
+        // Kontrollera om sessionsdata och anteckningar finns i LocalStorage
+        const sessions = JSON.parse(localStorage.getItem('sessions')) || {
             1: {
                 title: "Tillfälle 1: Introduktion och grunder",
                 description: `
@@ -42,7 +49,8 @@
                         <li>19.20–19.30: Avslutning och hemläxa</li>
                     </ul>
                     <strong>Hemläxa:</strong> Träna in Front och höger sida samt snurra höger/vänster.
-                `
+                `,
+                notes: ""
             },
             2: {
                 title: "Tillfälle 2: Fördjupning av positioner och rörelse",
@@ -55,7 +63,8 @@
                         <li>19.10–19.30: Avslutning och hemläxa</li>
                     </ul>
                     <strong>Hemläxa:</strong> Träna slalom och positionerna vänster sida och bakom.
-                `
+                `,
+                notes: ""
             },
             3: {
                 title: "Tillfälle 3: Bygga komplexitet",
@@ -68,7 +77,8 @@
                         <li>19.10–19.30: Teori och avslutning</li>
                     </ul>
                     <strong>Hemläxa:</strong> Träna korta sekvenser med kombinationer av positioner och trick.
-                `
+                `,
+                notes: ""
             },
             4: {
                 title: "Tillfälle 4: Sätta samman rörelser och program",
@@ -80,7 +90,8 @@
                         <li>19.10–19.30: Teori och feedback</li>
                     </ul>
                     <strong>Hemläxa:</strong> Sätt ihop en sekvens på 30-45 sekunder till musik.
-                `
+                `,
+                notes: ""
             },
             5: {
                 title: "Tillfälle 5: Uppvisning och avslutning",
@@ -92,20 +103,42 @@
                         <li>19.20–19.30: Avslutning och gruppfoto</li>
                     </ul>
                     <strong>Hemläxa:</strong> Reflektera över kursen och planera vidare träning.
-                `
+                `,
+                notes: ""
             }
         };
 
+        // Spara till LocalStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('sessions', JSON.stringify(sessions));
+        }
+
+        // Visa sessionens detaljer
         function showSession(sessionId) {
-            const sessionDetails = document.getElementById("session-details");
-            const sessionTitle = document.getElementById("session-title");
-            const sessionDescription = document.getElementById("session-description");
-
             const session = sessions[sessionId];
-            sessionTitle.innerHTML = session.title;
-            sessionDescription.innerHTML = session.description;
+            document.getElementById("session-title").innerText = session.title;
+            document.getElementById("session-description").value = session.description;
+            document.getElementById("session-notes").value = session.notes || "";
+            document.getElementById("session-details").style.display = "block";
+            document.getElementById("session-details").dataset.currentSessionId = sessionId;
+        }
 
-            sessionDetails.style.display = "block";
+        // Spara ändringar för session
+        function saveSession() {
+            const sessionId = document.getElementById("session-details").dataset.currentSessionId;
+            const updatedDescription = document.getElementById("session-description").value;
+            sessions[sessionId].description = updatedDescription;
+            saveToLocalStorage();
+            alert("Ändringar sparade!");
+        }
+
+        // Spara anteckningar
+        function saveNotes() {
+            const sessionId = document.getElementById("session-details").dataset.currentSessionId;
+            const updatedNotes = document.getElementById("session-notes").value;
+            sessions[sessionId].notes = updatedNotes;
+            saveToLocalStorage();
+            alert("Anteckningar sparade!");
         }
     </script>
 </body>
