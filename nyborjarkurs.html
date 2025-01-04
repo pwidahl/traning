@@ -6,93 +6,20 @@
     <title>Nybörjarkurs</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Mobilanpassning och layout */
-        .course-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 15px;
-        }
-
-        .course-links a {
-            display: inline-block;
-            text-align: center;
-            background: #6a11cb;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1rem;
-            padding: 10px 15px;
-            border-radius: 8px;
-            transition: background 0.3s;
-            width: 120px;
-        }
-
-        .course-links a:hover {
-            background: #2575fc;
-        }
-
-        .session-details {
+        .reset-button {
             margin-top: 20px;
-        }
-
-        ul {
-            padding: 0;
-            list-style-type: none;
-            margin: 0;
-        }
-
-        ul li {
-            background: #f7f7f7;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        ul li .content {
-            flex: 1;
-            margin-top: 5px;
-            font-size: 0.95rem;
-            color: #333;
-        }
-
-        textarea {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 0.9rem;
-            resize: vertical;
-        }
-
-        button {
-            font-size: 0.9rem;
-            padding: 5px 10px;
-            background: #2575fc;
+            background: #e63946;
             color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background 0.3s;
         }
 
-        button:hover {
-            background: #1b4d9c;
-        }
-
-        @media (max-width: 768px) {
-            .course-links a {
-                width: 100px;
-                font-size: 0.9rem;
-            }
-
-            ul li {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        .reset-button:hover {
+            background: #d62828;
         }
     </style>
 </head>
@@ -117,6 +44,8 @@
             <textarea id="session-notes" rows="5" placeholder="Lägg till anteckningar här..."></textarea>
             <button onclick="saveSession()">Spara ändringar</button>
         </div>
+
+        <button class="reset-button" onclick="resetToDefault()">Återställ till grund</button>
     </div>
     
     <footer>
@@ -124,8 +53,8 @@
     </footer>
 
     <script>
-        // Sessionsdata med fasta tider
-        const sessions = JSON.parse(localStorage.getItem('sessions')) || {
+        // Standarddata för att återställa
+        const defaultSessions = {
             1: {
                 title: "Tillfälle 1: Introduktion och grunder",
                 schedule: [
@@ -147,8 +76,42 @@
                     { time: "19.10–19.30", content: "Avslutning och hemläxa" }
                 ],
                 notes: ""
+            },
+            3: {
+                title: "Tillfälle 3: Bygga komplexitet",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
+                    { time: "18.10–18.30", content: "Trick: Backa" },
+                    { time: "18.30–18.50", content: "Trick: Sitt fint och buga" },
+                    { time: "18.50–19.10", content: "Kombinera positioner och trick" },
+                    { time: "19.10–19.30", content: "Teori och avslutning" }
+                ],
+                notes: ""
+            },
+            4: {
+                title: "Tillfälle 4: Sätta samman rörelser och program",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
+                    { time: "18.10–18.40", content: "Kedja rörelser" },
+                    { time: "18.40–19.10", content: "Förbered program" },
+                    { time: "19.10–19.30", content: "Teori och feedback" }
+                ],
+                notes: ""
+            },
+            5: {
+                title: "Tillfälle 5: Uppvisning och avslutning",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
+                    { time: "18.10–19.00", content: "Varje ekipage visar sitt program" },
+                    { time: "19.00–19.20", content: "Reflektion och feedback" },
+                    { time: "19.20–19.30", content: "Avslutning och gruppfoto" }
+                ],
+                notes: ""
             }
         };
+
+        // Aktuell sessionsdata (med möjlighet att spara ändringar)
+        const sessions = JSON.parse(localStorage.getItem('sessions')) || JSON.parse(JSON.stringify(defaultSessions));
 
         // Spara till LocalStorage
         function saveToLocalStorage() {
@@ -197,6 +160,18 @@
             sessions[sessionId].notes = updatedNotes;
             saveToLocalStorage();
             alert("Ändringar sparade!");
+        }
+
+        // Återställ till grund
+        function resetToDefault() {
+            if (confirm("Vill du verkligen återställa alla tillfällen till grundinställningarna?")) {
+                Object.keys(defaultSessions).forEach(sessionId => {
+                    sessions[sessionId] = JSON.parse(JSON.stringify(defaultSessions[sessionId]));
+                });
+                saveToLocalStorage();
+                alert("Alla tillfällen har återställts till grund.");
+                location.reload(); // Uppdatera sidan
+            }
         }
     </script>
 </body>
