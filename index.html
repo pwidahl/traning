@@ -3,132 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freestylekursledarapp</title>
+    <title>Freestylekurser</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-        }
-        h1, h2 {
             text-align: center;
         }
-        .session-list {
-            margin: 20px 0;
+        h1 {
+            margin-bottom: 20px;
         }
-        .session-content {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        .course-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: auto;
         }
-        .hidden {
-            display: none;
-        }
-        button {
+        a {
             display: inline-block;
-            margin: 5px 0;
+            text-decoration: none;
             padding: 10px;
             background-color: #007BFF;
             color: white;
-            border: none;
             border-radius: 5px;
-            cursor: pointer;
+            font-size: 18px;
         }
-        button:hover {
+        a:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Freestylekurs: Kursledarapp</h1>
-        <h2>Välj ett tillfälle</h2>
-        <div class="session-list">
-            <button onclick="showSession(1)">Tillfälle 1</button>
-            <button onclick="showSession(2)">Tillfälle 2</button>
-            <button onclick="showSession(3)">Tillfälle 3</button>
-            <button onclick="showSession(4)">Tillfälle 4</button>
-            <button onclick="showSession(5)">Tillfälle 5</button>
-        </div>
-        <div id="session-content" class="session-content hidden"></div>
+    <h1>Välkommen till Freestylekurser</h1>
+    <p>Välj en kurs nedan:</p>
+    <div class="course-links">
+        <a href="nyborjarkurs.html">Nybörjarkurs</a>
+        <a href="fortsattningskurs.html">Fortsättningskurs</a>
+        <a href="avanceradkurs.html">Avancerad kurs</a>
     </div>
-
-    <script>
-        const courseData = {
-            1: {
-                title: "Tillfälle 1: Introduktion och grunder",
-                schedule: [
-                    "18.00–18.10: Introduktion",
-                    "18.10–18.40: Grundpositioner (Front, höger sida)",
-                    "18.40–19.00: Trick: Snurra höger/vänster",
-                    "19.00–19.20: Teori: Shaping, belöningsplacering",
-                    "19.20–19.30: Avslutning och hemläxa"
-                ],
-                homework: "Träna in Front och höger sida samt snurra höger/vänster."
-            },
-            2: {
-                title: "Tillfälle 2: Fördjupning av positioner och rörelse",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–18.30: Grundpositioner: Vänster sida, bakom",
-                    "18.30–18.50: Trick: Slalom framåt/bakåt",
-                    "18.50–19.10: Teori: Ordförståelse, muskelminne",
-                    "19.10–19.30: Avslutning och repetition"
-                ],
-                homework: "Träna slalom och positionerna vänster sida och bakom."
-            },
-            3: {
-                title: "Tillfälle 3: Bygga komplexitet",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–18.30: Trick: Backa",
-                    "18.30–18.50: Trick: Sitt fint och buga",
-                    "18.50–19.10: Kombinera positioner och trick",
-                    "19.10–19.30: Teori och avslutning"
-                ],
-                homework: "Träna korta sekvenser med kombinationer av positioner och trick."
-            },
-            4: {
-                title: "Tillfälle 4: Sätta samman rörelser och program",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–18.40: Kedja rörelser",
-                    "18.40–19.10: Förbered program",
-                    "19.10–19.30: Teori och feedback"
-                ],
-                homework: "Sätt ihop en sekvens på 30 sekunder till musik."
-            },
-            5: {
-                title: "Tillfälle 5: Skapa ett freestyleprogram",
-                schedule: [
-                    "18.00–18.10: Uppvärmning och repetition",
-                    "18.10–19.00: Bygg ett program",
-                    "19.00–19.20: Uppvisning",
-                    "19.20–19.30: Feedback och avslutning"
-                ],
-                homework: "Reflektera över kursen och planera vidare träning."
-            }
-        };
-
-        function showSession(sessionId) {
-            const session = courseData[sessionId];
-            const sessionContent = document.getElementById("session-content");
-            
-            sessionContent.innerHTML = `
-                <h2>${session.title}</h2>
-                <h3>Tidsplan:</h3>
-                <ul>
-                    ${session.schedule.map(item => `<li>${item}</li>`).join("")}
-                </ul>
-                <h3>Hemläxa:</h3>
-                <p>${session.homework}</p>
-            `;
-            sessionContent.classList.remove("hidden");
-        }
-    </script>
 </body>
 </html>
