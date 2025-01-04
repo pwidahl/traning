@@ -55,7 +55,8 @@
     <form id="participant-form">
         <h2>Lägg till deltagare</h2>
         <label for="course">Kurs:</label>
-        <select id="course">
+        <select id="course" required>
+            <option value="">Välj kurs</option>
             <option value="Nybörjarkurs">Nybörjarkurs</option>
             <option value="Fortsättningskurs">Fortsättningskurs</option>
             <option value="Avancerad kurs">Avancerad kurs</option>
@@ -85,32 +86,43 @@
     </div>
 
     <script>
+        // Objekt för att lagra deltagare för varje kurs
         const courses = {
             "Nybörjarkurs": [],
             "Fortsättningskurs": [],
             "Avancerad kurs": []
         };
 
-        // Lägg till deltagare
+        // Hantera formuläret för att lägga till deltagare
         document.getElementById("participant-form").addEventListener("submit", function (e) {
             e.preventDefault();
 
+            // Hämta data från formuläret
             const course = document.getElementById("course").value;
-            const name = document.getElementById("name").value;
-            const progress = document.getElementById("progress").value;
-            const notes = document.getElementById("notes").value;
+            const name = document.getElementById("name").value.trim();
+            const progress = document.getElementById("progress").value.trim();
+            const notes = document.getElementById("notes").value.trim();
 
+            if (!course || !name) {
+                alert("Var vänlig fyll i både kurs och namn.");
+                return;
+            }
+
+            // Skapa deltagarobjekt och lägga till i kursens lista
             const participant = { name, progress, notes };
             courses[course].push(participant);
 
+            // Rensa formuläret
+            document.getElementById("course").value = "";
             document.getElementById("name").value = "";
             document.getElementById("progress").value = "";
             document.getElementById("notes").value = "";
 
+            // Uppdatera deltagarlistan
             updateParticipantsList();
         });
 
-        // Uppdatera deltagarlistan
+        // Funktion för att uppdatera listan med deltagare
         function updateParticipantsList() {
             const participantsList = document.getElementById("participants-list");
             participantsList.innerHTML = "<h2>Kursdeltagare</h2>";
