@@ -51,26 +51,31 @@
         }
 
         th, td {
-            padding: 10px;
+            padding: 12px;
             text-align: left;
             border: 1px solid #ddd;
         }
 
         th {
             background: #f4f4f4;
+            font-weight: bold;
         }
 
-        input, textarea {
+        td input {
             width: 100%;
             padding: 10px;
-            margin: 5px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 1rem;
+            box-sizing: border-box;
         }
 
         textarea {
-            resize: none;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
         }
 
         .save-button {
@@ -92,7 +97,7 @@
         /* Mobilanpassning */
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 15px;
             }
 
             h1 {
@@ -103,7 +108,7 @@
                 font-size: 0.9rem;
             }
 
-            input, textarea {
+            td input, textarea {
                 font-size: 0.9rem;
                 padding: 8px;
             }
@@ -112,15 +117,11 @@
                 font-size: 0.9rem;
                 padding: 8px;
             }
-
-            th, td {
-                padding: 8px;
-            }
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 8px;
+                padding: 10px;
             }
 
             h1 {
@@ -128,10 +129,12 @@
             }
 
             table {
-                font-size: 0.8rem;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
 
-            input, textarea {
+            td input, textarea {
                 font-size: 0.8rem;
                 padding: 6px;
             }
@@ -144,20 +147,13 @@
             th, td {
                 padding: 6px;
             }
-
-            /* Justera tabeller till mobilvy */
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Nybörjarkurs</h1>
-        <p>Klicka på ett tillfälle för att justera kursplanen:</p>
+        <p>Klicka på ett tillfälle för att redigera kursplanen:</p>
 
         <div>
             <button onclick="showSession(1)">Tillfälle 1</button>
