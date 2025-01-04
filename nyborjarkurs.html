@@ -5,11 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nybörjarkurs</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Mobilanpassning och tydligare layout */
+        .course-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .course-links a {
+            display: inline-block;
+            text-align: center;
+            background: #6a11cb;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: background 0.3s;
+            width: 120px;
+        }
+
+        .course-links a:hover {
+            background: #2575fc;
+        }
+
+        .session-details {
+            margin-top: 20px;
+        }
+
+        ul {
+            padding: 0;
+            list-style-type: none;
+            margin: 0;
+        }
+
+        ul li {
+            background: #f7f7f7;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul li .content {
+            flex: 1;
+            margin-left: 10px;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        button {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            background: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1b4d9c;
+        }
+
+        textarea {
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .course-links a {
+                width: 100px;
+                font-size: 0.9rem;
+            }
+
+            ul li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            ul li .content {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Nybörjarkurs</h1>
-        <p>Klicka på ett tillfälle för att se och justera tidsplanen:</p>
+        <p>Klicka på ett tillfälle för att se tidsplanen och göra anteckningar:</p>
         
         <div class="course-links">
             <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
@@ -19,16 +114,13 @@
             <a href="#session5" onclick="showSession(5)">Tillfälle 5</a>
         </div>
         
-        <div id="session-details" class="session-details" style="margin-top: 20px; display: none;">
+        <div id="session-details" class="session-details" style="display: none;">
             <h2 id="session-title"></h2>
-            <div id="schedule-container">
-                <h3>Tidsplan</h3>
-                <ul id="schedule-list"></ul>
-                <button onclick="addScheduleItem()">Lägg till ny del</button>
-            </div>
+            <h3>Tidsplan</h3>
+            <ul id="schedule-list"></ul>
             <h3>Anteckningar:</h3>
-            <textarea id="session-notes" rows="5" style="width: 100%;" placeholder="Lägg till anteckningar här..."></textarea>
-            <button onclick="saveSession()">Spara ändringar</button>
+            <textarea id="session-notes" rows="5" placeholder="Lägg till anteckningar här..."></textarea>
+            <button onclick="saveSession()">Spara anteckningar</button>
         </div>
     </div>
     
@@ -37,7 +129,7 @@
     </footer>
 
     <script>
-        // Kontrollera om data redan finns i LocalStorage
+        // Sessionsdata med fasta tider
         const sessions = JSON.parse(localStorage.getItem('sessions')) || {
             1: {
                 title: "Tillfälle 1: Introduktion och grunder",
@@ -84,49 +176,23 @@
             scheduleList.innerHTML = ""; // Rensa tidigare lista
             const schedule = sessions[sessionId].schedule;
 
-            schedule.forEach((item, index) => {
+            schedule.forEach((item) => {
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    <div>
-                        <input type="text" value="${item.time}" placeholder="Tid (ex. 18.00–18.10)" 
-                            onchange="updateScheduleItem(${sessionId}, ${index}, 'time', this.value)" />
-                        <input type="text" value="${item.content}" placeholder="Innehåll" 
-                            onchange="updateScheduleItem(${sessionId}, ${index}, 'content', this.value)" />
-                        <button onclick="removeScheduleItem(${sessionId}, ${index})">Ta bort</button>
-                    </div>
+                    <strong>${item.time}</strong>
+                    <div class="content">${item.content}</div>
                 `;
                 scheduleList.appendChild(li);
             });
         }
 
-        // Uppdatera en tidsplanpost
-        function updateScheduleItem(sessionId, index, key, value) {
-            sessions[sessionId].schedule[index][key] = value;
-            saveToLocalStorage();
-        }
-
-        // Lägg till ny post i tidsplan
-        function addScheduleItem() {
-            const sessionId = document.getElementById("session-details").dataset.currentSessionId;
-            sessions[sessionId].schedule.push({ time: "", content: "" });
-            updateSchedule(sessionId);
-            saveToLocalStorage();
-        }
-
-        // Ta bort en post från tidsplanen
-        function removeScheduleItem(sessionId, index) {
-            sessions[sessionId].schedule.splice(index, 1);
-            updateSchedule(sessionId);
-            saveToLocalStorage();
-        }
-
-        // Spara session (anteckningar och tidsplan)
+        // Spara anteckningar
         function saveSession() {
             const sessionId = document.getElementById("session-details").dataset.currentSessionId;
             const updatedNotes = document.getElementById("session-notes").value;
             sessions[sessionId].notes = updatedNotes;
             saveToLocalStorage();
-            alert("Ändringar och anteckningar sparade!");
+            alert("Anteckningar sparade!");
         }
     </script>
 </body>
