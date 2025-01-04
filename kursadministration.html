@@ -58,9 +58,8 @@
         }
 
         th, td {
-            text-align: left;
-            padding: 10px;
             border: 1px solid #ddd;
+            padding: 10px;
         }
 
         th {
@@ -87,7 +86,7 @@
         <!-- Skapa kurs -->
         <label for="course-name">Kursnamn:</label>
         <input type="text" id="course-name" placeholder="Ange kursens namn">
-        <button onclick="addCourse()">Skapa kurs</button>
+        <button onclick="addCourse()">Skapa Kurs</button>
 
         <!-- Välj kurs -->
         <label for="course-select">Välj Kurs:</label>
@@ -104,7 +103,7 @@
 
         <!-- Visa deltagare -->
         <h2>Deltagare</h2>
-        <table id="participant-table">
+        <table>
             <thead>
                 <tr>
                     <th>Ägare</th>
@@ -112,22 +111,23 @@
                     <th>Ta bort</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody id="participant-table"></tbody>
         </table>
     </div>
 
     <script>
-        // Data lagrad i localStorage
-        let courses = JSON.parse(localStorage.getItem('courses')) || {};
+        // Hämta data från localStorage eller initiera tomma objekt
+        let courses = JSON.parse(localStorage.getItem("courses")) || {};
 
         // Spara data till localStorage
         function saveToLocalStorage() {
-            localStorage.setItem('courses', JSON.stringify(courses));
+            console.log("Sparar data till localStorage...");
+            localStorage.setItem("courses", JSON.stringify(courses));
         }
 
-        // Lägg till ny kurs
+        // Lägg till en ny kurs
         function addCourse() {
-            const courseName = document.getElementById('course-name').value.trim();
+            const courseName = document.getElementById("course-name").value.trim();
             if (!courseName) {
                 alert("Ange ett kursnamn!");
                 return;
@@ -139,27 +139,27 @@
             courses[courseName] = [];
             saveToLocalStorage();
             renderCourses();
-            document.getElementById('course-name').value = '';
+            document.getElementById("course-name").value = "";
             alert(`Kurs "${courseName}" skapades!`);
         }
 
-        // Rendera kurslista
+        // Rendera alla kurser i dropdown-menyn
         function renderCourses() {
-            const courseSelect = document.getElementById('course-select');
+            const courseSelect = document.getElementById("course-select");
             courseSelect.innerHTML = '<option value="">-- Välj Kurs --</option>';
             Object.keys(courses).forEach(courseName => {
-                const option = document.createElement('option');
+                const option = document.createElement("option");
                 option.value = courseName;
                 option.textContent = courseName;
                 courseSelect.appendChild(option);
             });
         }
 
-        // Lägg till deltagare
+        // Lägg till en ny deltagare
         function addParticipant() {
-            const courseName = document.getElementById('course-select').value;
-            const ownerName = document.getElementById('owner-name').value.trim();
-            const dogName = document.getElementById('dog-name').value.trim();
+            const courseName = document.getElementById("course-select").value;
+            const ownerName = document.getElementById("owner-name").value.trim();
+            const dogName = document.getElementById("dog-name").value.trim();
 
             if (!courseName) {
                 alert("Välj en kurs!");
@@ -173,30 +173,30 @@
             courses[courseName].push({ owner: ownerName, dog: dogName });
             saveToLocalStorage();
             renderParticipants();
-            document.getElementById('owner-name').value = '';
-            document.getElementById('dog-name').value = '';
+            document.getElementById("owner-name").value = "";
+            document.getElementById("dog-name").value = "";
         }
 
-        // Rendera deltagare
+        // Rendera deltagarlistan för vald kurs
         function renderParticipants() {
-            const courseName = document.getElementById('course-select').value;
-            const participantTableBody = document.getElementById('participant-table').querySelector('tbody');
-            participantTableBody.innerHTML = '';
+            const courseName = document.getElementById("course-select").value;
+            const participantTable = document.getElementById("participant-table");
+            participantTable.innerHTML = "";
 
             if (!courseName) return;
 
             courses[courseName].forEach((participant, index) => {
-                const row = document.createElement('tr');
+                const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${participant.owner}</td>
                     <td>${participant.dog}</td>
                     <td><button class="delete-button" onclick="deleteParticipant('${courseName}', ${index})">Ta bort</button></td>
                 `;
-                participantTableBody.appendChild(row);
+                participantTable.appendChild(row);
             });
         }
 
-        // Ta bort deltagare
+        // Ta bort en deltagare
         function deleteParticipant(courseName, index) {
             courses[courseName].splice(index, 1);
             saveToLocalStorage();
@@ -205,6 +205,7 @@
 
         // Initiera sidan
         function init() {
+            console.log("Initierar sidan...");
             renderCourses();
         }
 
