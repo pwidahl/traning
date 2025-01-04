@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortsättningskurs</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* All CSS från tidigare kod är kvar */
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Fortsättningskurs</h1>
-        <p>Klicka på ett tillfälle för att se detaljer:</p>
+        <p>Klicka på ett tillfälle för att se och justera innehållet:</p>
         
         <div class="course-links">
             <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
@@ -19,93 +22,132 @@
             <a href="#session5" onclick="showSession(5)">Tillfälle 5</a>
         </div>
         
-        <div id="session-details" class="session-details" style="margin-top: 20px;">
+        <div id="session-details" class="session-details" style="display: none;">
             <h2 id="session-title"></h2>
-            <p id="session-description"></p>
+            <h3>Tidsplan</h3>
+            <ul id="schedule-list"></ul>
+            <h3>Anteckningar:</h3>
+            <textarea id="session-notes" rows="5" placeholder="Lägg till anteckningar här..."></textarea>
+            <button class="save-button" onclick="saveSession()">Spara ändringar</button>
         </div>
+
+        <button class="reset-button" onclick="resetToDefault()">Återställ till grund</button>
     </div>
     
     <footer>
-        <a href="index.html">&larr; Tillbaka till startsidan</a>
+        <p style="text-align: center; margin-top: 20px;">&copy; 2025 Kursadministration</p>
     </footer>
 
     <script>
-        const sessions = {
+        const defaultSessions = {
             1: {
-                title: "Tillfälle 1: Fördjupning av grunder",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning</li>
-                        <li>18.10–18.40: Precision i positioner</li>
-                        <li>18.40–19.00: Trick: Cirkla runt föraren</li>
-                        <li>19.00–19.20: Teori: Belöningsplacering</li>
-                        <li>19.20–19.30: Hemläxa</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Träna cirklar och flyt mellan positioner.
-                `
+                title: "Tillfälle 1: Fördjupning och precision",
+                schedule: [
+                    { time: "18.00–18.10", content: "Introduktion och repetition av grunder" },
+                    { time: "18.10–18.40", content: "Positioner i rörelse: Front och vänster sida" },
+                    { time: "18.40–19.00", content: "Trick: Backa i cirkel" },
+                    { time: "19.00–19.20", content: "Teori: Belöningsplacering och timing" },
+                    { time: "19.20–19.30", content: "Avslutning och hemläxa" }
+                ],
+                notes: ""
             },
             2: {
-                title: "Tillfälle 2: Kedjning av beteenden",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning och repetition</li>
-                        <li>18.10–18.40: Kedja trick och positioner</li>
-                        <li>18.40–19.00: Avståndsarbete</li>
-                        <li>19.00–19.20: Teori: Timing och kedjning</li>
-                        <li>19.20–19.30: Avslutning och hemläxa</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Kedja tre trick och arbeta på avstånd.
-                `
+                title: "Tillfälle 2: Kedjor och sekvenser",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition av föregående moment" },
+                    { time: "18.10–18.40", content: "Trick: Slalom bakåt och framåt i kombination" },
+                    { time: "18.40–19.00", content: "Kombinera positioner med rörelser" },
+                    { time: "19.00–19.20", content: "Teori: Kedjning av beteenden" },
+                    { time: "19.20–19.30", content: "Avslutning och feedback" }
+                ],
+                notes: ""
             },
             3: {
-                title: "Tillfälle 3: Dynamik och variation",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning</li>
-                        <li>18.10–18.30: Variation i tempo</li>
-                        <li>18.30–18.50: Trick: Backa runt föraren</li>
-                        <li>18.50–19.10: Teori: Skapa variation i program</li>
-                        <li>19.10–19.30: Hemläxa</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Träna variation och dynamik i sekvenser.
-                `
+                title: "Tillfälle 3: Kreativitet och variation",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition och uppvärmning" },
+                    { time: "18.10–18.40", content: "Trick: Snurra i olika riktningar" },
+                    { time: "18.40–19.00", content: "Lägga till variation i positioner" },
+                    { time: "19.00–19.20", content: "Teori: Kreativitet i freestyleprogram" },
+                    { time: "19.20–19.30", content: "Avslutning och hemläxa" }
+                ],
+                notes: ""
             },
             4: {
-                title: "Tillfälle 4: Sätta ihop program",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning och repetition</li>
-                        <li>18.10–18.40: Skapa sekvenser</li>
-                        <li>18.40–19.10: Testa sekvenser med musik</li>
-                        <li>19.10–19.30: Feedback och justeringar</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Finslipa ett 1-minutsprogram.
-                `
+                title: "Tillfälle 4: Program och övergångar",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition och uppvärmning" },
+                    { time: "18.10–18.40", content: "Bygga övergångar mellan sekvenser" },
+                    { time: "18.40–19.00", content: "Testa och utvärdera individuella program" },
+                    { time: "19.00–19.20", content: "Teori: Förbättring genom analys" },
+                    { time: "19.20–19.30", content: "Avslutning och hemläxa" }
+                ],
+                notes: ""
             },
             5: {
-                title: "Tillfälle 5: Uppvisning",
-                description: `
-                    <ul>
-                        <li>18.00–18.10: Uppvärmning</li>
-                        <li>18.10–19.00: Visa program</li>
-                        <li>19.00–19.20: Gruppfeedback</li>
-                        <li>19.20–19.30: Avslutning</li>
-                    </ul>
-                    <strong>Hemläxa:</strong> Planera vidare träning.
-                `
+                title: "Tillfälle 5: Uppvisning och avslutning",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
+                    { time: "18.10–19.00", content: "Uppvisning av individuella program" },
+                    { time: "19.00–19.20", content: "Reflektion och feedback" },
+                    { time: "19.20–19.30", content: "Avslutning och gruppfoto" }
+                ],
+                notes: ""
             }
         };
 
+        const sessions = JSON.parse(localStorage.getItem('sessions')) || JSON.parse(JSON.stringify(defaultSessions));
+
+        function saveToLocalStorage() {
+            localStorage.setItem('sessions', JSON.stringify(sessions));
+        }
+
         function showSession(sessionId) {
-            const sessionDetails = document.getElementById("session-details");
-            const sessionTitle = document.getElementById("session-title");
-            const sessionDescription = document.getElementById("session-description");
-
             const session = sessions[sessionId];
-            sessionTitle.innerHTML = session.title;
-            sessionDescription.innerHTML = session.description;
+            document.getElementById("session-title").innerText = session.title;
+            document.getElementById("session-notes").value = session.notes || "";
+            updateSchedule(sessionId);
+            document.getElementById("session-details").style.display = "block";
+        }
 
-            sessionDetails.style.display = "block";
+        function updateSchedule(sessionId) {
+            const scheduleList = document.getElementById("schedule-list");
+            scheduleList.innerHTML = "";
+            sessions[sessionId].schedule.forEach((item, index) => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <strong>${item.time}</strong>
+                    <textarea 
+                        class="content" 
+                        onchange="updateContent(${sessionId}, ${index}, this.value)"
+                    >${item.content}</textarea>
+                `;
+                scheduleList.appendChild(li);
+            });
+        }
+
+        function updateContent(sessionId, index, value) {
+            sessions[sessionId].schedule[index].content = value;
+            saveToLocalStorage();
+        }
+
+        function saveSession() {
+            const sessionId = document.getElementById("session-details").dataset.currentSessionId;
+            const updatedNotes = document.getElementById("session-notes").value;
+            sessions[sessionId].notes = updatedNotes;
+            saveToLocalStorage();
+            alert("Ändringar sparade!");
+        }
+
+        function resetToDefault() {
+            if (confirm("Vill du verkligen återställa alla tillfällen till grundinställningarna?")) {
+                Object.keys(defaultSessions).forEach(sessionId => {
+                    sessions[sessionId] = JSON.parse(JSON.stringify(defaultSessions[sessionId]));
+                });
+                saveToLocalStorage();
+                alert("Alla tillfällen har återställts till grund.");
+                location.reload();
+            }
         }
     </script>
 </body>
