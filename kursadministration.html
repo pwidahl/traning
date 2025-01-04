@@ -89,59 +89,22 @@
             border-radius: 5px;
         }
 
-        /* Mobilanpassning */
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            h1, h2 {
-                font-size: 1.5rem;
-            }
-
-            input, select, textarea, button {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-
-            table th, table td {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-
-            button {
-                padding: 8px;
-            }
+        .edit-button {
+            background: #ffc107;
+            color: white;
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
+        .edit-button:hover {
+            background: #e0a800;
+        }
 
-            h1, h2 {
-                font-size: 1.2rem;
-            }
+        .save-button {
+            background: #28a745;
+            color: white;
+        }
 
-            input, select, textarea, button {
-                font-size: 0.85rem;
-                padding: 7px;
-            }
-
-            table {
-                display: block;
-                overflow-x: auto;
-            }
-
-            table th, table td {
-                font-size: 0.8rem;
-                padding: 6px;
-            }
-
-            button {
-                font-size: 0.85rem;
-                padding: 6px;
-            }
+        .save-button:hover {
+            background: #218838;
         }
     </style>
 </head>
@@ -183,11 +146,11 @@
 
         <div id="notes-section" class="notes-container" style="display: none;">
             <h2>Anteckningar för <span id="notes-participant"></span></h2>
-            <textarea id="new-note" rows="3" placeholder="Lägg till en ny anteckning"></textarea>
-            <button onclick="addNote()">Lägg till anteckning</button>
             <ul id="notes-list">
                 <!-- Dynamiska anteckningar -->
             </ul>
+            <textarea id="new-note" rows="3" placeholder="Lägg till en ny anteckning"></textarea>
+            <button onclick="addNote()">Lägg till anteckning</button>
         </div>
     </div>
 
@@ -287,9 +250,12 @@
             const notesList = document.getElementById('notes-list');
             notesList.innerHTML = '';
 
-            participant.notes.forEach(note => {
+            participant.notes.forEach((note, noteIndex) => {
                 const listItem = document.createElement('li');
-                listItem.innerText = `${note.date}: ${note.text}`;
+                listItem.innerHTML = `
+                    <textarea onchange="updateNote(${noteIndex}, this.value)">${note.text}</textarea>
+                    <small>Skapad: ${note.date}</small>
+                `;
                 notesList.appendChild(listItem);
             });
         }
@@ -306,6 +272,11 @@
             saveToLocalStorage();
             viewNotes(selectedParticipantIndex);
             document.getElementById('new-note').value = '';
+        }
+
+        function updateNote(noteIndex, newText) {
+            participants[selectedCourse][selectedParticipantIndex].notes[noteIndex].text = newText;
+            saveToLocalStorage();
         }
 
         function deleteParticipant(index) {
