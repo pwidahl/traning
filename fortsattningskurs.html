@@ -3,250 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortsättningskurs</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Avancerad kurs</title>
     <style>
-    
-    .back-link {
-    display: inline-block;
-    margin-bottom: 15px;
-    text-decoration: none;
-    color: #666; /* Diskret grå färg */
-    font-size: 1rem;
-    padding: 8px 12px;
-    border: 0px solid #ccc; /* Ljusgrå ram */
-    border-radius: 5px; /* Rundade hörn */
-    transition: background 0.3s, color 0.3s, border-color 0.3s;
+/* Grundläggande layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+    color: #333;
 }
 
-.back-link:hover {
-    background: #f2f2f2; /* Ljusgrå bakgrund vid hover */
-    color: #333; /* Mörkare grå text vid hover */
-    border-color: #999; /* Mörkare grå ram vid hover */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-    /* Mobiloptimering av boxarna */
-    ul li {
-        background: #fff;
-        margin-bottom: 10px;
+
+/* Rubriker */
+h1, h2, h3 {
+    text-align: center;
+    color: #444;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+h2, h3 {
+    margin-top: 20px;
+    font-size: 1.5rem;
+}
+
+/* Text */
+p {
+    text-align: center;
+    color: #666;
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+}
+
+/* Knappdesign */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-button {
+    background: #e0e0e0;
+    color: #333;
+    border: 1px solid #bdbdbd;
+}
+
+.back-button:hover {
+    background: #bdbdbd;
+    color: #000;
+}
+
+.home-button {
+    background: #f4f4f4;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.home-button:hover {
+    background: #e0e0e0;
+    color: #000;
+}
+
+.save-button {
+    background: #28a745;
+    color: white;
+    border: none;
+}
+
+.save-button:hover {
+    background: #218838;
+}
+
+.reset-button {
+    background: #dc3545;
+    color: white;
+    border: none;
+}
+
+.reset-button:hover {
+    background: #c82333;
+}
+
+/* Länkar till kurstillfällen */
+.course-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.course-links a {
+    display: inline-block;
+    text-align: center;
+    background: #6c63ff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.course-links a:hover {
+    background: #5547c8;
+}
+
+/* Tidsplan */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    background: #f4f4f4;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+ul li strong {
+    font-size: 1rem;
+    color: #444;
+    display: block;
+}
+
+/* Textarea */
+textarea {
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+/* Mobilanpassning */
+@media (max-width: 768px) {
+    .container {
         padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        max-width: 100%;
-        box-sizing: border-box; /* Förhindra att boxarna går utanför ramen */
     }
 
-    ul li strong {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2, h3 {
+        font-size: 1.4rem;
+    }
+
+    p {
+        font-size: 0.95rem;
+    }
+
+    .course-links a {
         font-size: 0.9rem;
-        color: #333;
-        display: block; /* För att säkerställa att tiden visas tydligt */
+        padding: 8px 12px;
+    }
+
+    ul li {
+        padding: 10px;
+        gap: 8px;
     }
 
     textarea {
-        width: 100%;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
         font-size: 0.9rem;
-        resize: vertical;
-        box-sizing: border-box; /* Säkerställ att textarea hålls inom ramarna */
     }
 
-    /* Responsiv design */
-    @media (max-width: 768px) {
-        ul li {
-            padding: 10px;
-            gap: 8px;
-        }
+    .button {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
 
-        textarea {
-            font-size: 0.85rem;
-        }
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
     }
 
-    @media (max-width: 480px) {
-        ul li {
-            padding: 8px;
-            gap: 6px;
-        }
-
-        textarea {
-            font-size: 0.8rem;
-        }
+    h1 {
+        font-size: 1.5rem;
     }
-        /* Grundlayout */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f9f4ef;
-        }
 
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 15px;
-        }
+    h2, h3 {
+        font-size: 1.3rem;
+    }
 
-        h1, h2, h3 {
-            text-align: center;
-            color: #333;
-        }
+    p {
+        font-size: 0.9rem;
+    }
 
-        p {
-            text-align: center;
-            color: #666;
-            font-size: 0.95rem;
-        }
+    .course-links a {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
 
-        /* Kurslänkar */
-        .course-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
-        }
+    ul li {
+        padding: 8px;
+        gap: 6px;
+    }
 
-        .course-links a {
-            display: block;
-            text-align: center;
-            background: #6a11cb;
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
+    textarea {
+        font-size: 0.85rem;
+    }
 
-        .course-links a:hover {
-            background: #2575fc;
-        }
-
-        /* Sessiondetaljer */
-        .session-details {
-            margin-top: 20px;
-        }
-
-        ul {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-        }
-
-        ul li {
-            background: #fff;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        ul li strong {
-            font-size: 0.9rem;
-            color: #333;
-        }
-
-        textarea {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 0.9rem;
-            resize: vertical;
-        }
-
-        button {
-            font-size: 0.95rem;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-            width: 100%;
-        }
-
-        .save-button {
-            background: #2575fc;
-            color: white;
-        }
-
-        .save-button:hover {
-            background: #1b4d9c;
-        }
-
-        .reset-button {
-            background: #e63946;
-            color: white;
-            margin-top: 20px;
-        }
-
-        .reset-button:hover {
-            background: #d62828;
-        }
-
-        /* Mobiloptimering */
-        @media (max-width: 768px) {
-            .course-links a {
-                font-size: 0.85rem;
-                padding: 8px;
-            }
-
-            ul li {
-                padding: 10px;
-                gap: 8px;
-            }
-
-            textarea {
-                font-size: 0.85rem;
-            }
-
-            button {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            p {
-                font-size: 0.85rem;
-            }
-
-            .course-links a {
-                font-size: 0.8rem;
-                padding: 7px;
-            }
-
-            ul li {
-                padding: 8px;
-                gap: 6px;
-            }
-
-            textarea {
-                font-size: 0.8rem;
-            }
-
-            button {
-                font-size: 0.85rem;
-                padding: 7px;
-            }
-        }
+    .button {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+}
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Navigeringsknappar -->
+        <a href="index.html" class="button home-button">Hem</a>
+
         <h1>Fortsättningskurs</h1>
-        <p>Klicka på ett tillfälle för att se och justera innehållet:</p>
-        
+        <p>Klicka på ett tillfälle för att redigera innehållet:</p>
+
         <div class="course-links">
             <a href="#session1" onclick="showSession(1)">Tillfälle 1</a>
             <a href="#session2" onclick="showSession(2)">Tillfälle 2</a>
@@ -254,93 +253,118 @@
             <a href="#session4" onclick="showSession(4)">Tillfälle 4</a>
             <a href="#session5" onclick="showSession(5)">Tillfälle 5</a>
         </div>
-        
+
         <div id="session-details" class="session-details" style="display: none;">
             <h2 id="session-title"></h2>
             <h3>Tidsplan</h3>
             <ul id="schedule-list"></ul>
             <h3>Anteckningar:</h3>
             <textarea id="session-notes" rows="5" placeholder="Lägg till anteckningar här..."></textarea>
-            <button class="save-button" onclick="saveSession()">Spara ändringar</button>
+            <button class="button save-button" onclick="saveSession()">Spara ändringar</button>
+            <button class="button reset-button" onclick="resetSession()">Återställ till ursprung</button>
         </div>
-
-        <button class="reset-button" onclick="resetToDefault()">Återställ till grund</button>
     </div>
-            <a href="javascript:history.back()" class="back-link">← Tillbaka</a>
-    <footer>
-        <p style="text-align: center; margin-top: 20px;">&copy; 2025 Kursadministration</p>
-    </footer>
 
     <script>
+        // Standarddata för tillfällen
         const defaultSessions = {
             1: {
-                title: "Tillfälle 1: Introduktion och grunder",
+                title: "Tillfälle 1: Introduktion",
                 schedule: [
-                    { time: "18.00–18.10", content: "Introduktion" },
-                    { time: "18.10–18.40", content: "Grundpositioner (Front, höger sida)" },
-                    { time: "18.40–19.00", content: "Trick: Snurra höger/vänster" },
-                    { time: "19.00–19.20", content: "Teori: Shaping och belöningsplacering" },
-                    { time: "19.20–19.30", content: "Avslutning och hemläxa" }
+                    { time: "18.00–18.10", content: "Introduktion och repetition" },
+                    { time: "18.10–18.40", content: "Avancerade positioner" },
+                    { time: "18.40–19.00", content: "Timing och precision" }
+                ],
+                notes: ""
+            },
+            2: {
+                title: "Tillfälle 2: Programutveckling",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition av tidigare moment" },
+                    { time: "18.10–18.40", content: "Positioner i rörelse" },
+                    { time: "18.40–19.00", content: "Bygga kedjor" }
+                ],
+                notes: ""
+            },
+            3: {
+                title: "Tillfälle 3: Förfining och detaljer",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och repetition" },
+                    { time: "18.10–18.40", content: "Förfining av rörelser och tajming" },
+                    { time: "18.40–19.00", content: "Lägga till detaljer i trick" }
+                ],
+                notes: ""
+            },
+            4: {
+                title: "Tillfälle 4: Programkörning och analys",
+                schedule: [
+                    { time: "18.00–18.10", content: "Repetition av tidigare moment" },
+                    { time: "18.10–18.40", content: "Körning av programdelar" },
+                    { time: "18.40–19.00", content: "Feedback på program" }
+                ],
+                notes: ""
+            },
+            5: {
+                title: "Tillfälle 5: Uppvisning och avslutning",
+                schedule: [
+                    { time: "18.00–18.10", content: "Uppvärmning och förberedelse" },
+                    { time: "18.10–19.00", content: "Uppvisning av program" },
+                    { time: "19.00–19.20", content: "Reflektion och feedback" }
                 ],
                 notes: ""
             }
         };
 
-        const sessions = JSON.parse(localStorage.getItem('sessions')) || JSON.parse(JSON.stringify(defaultSessions));
+        let sessions = JSON.parse(JSON.stringify(defaultSessions));
 
-        function saveToLocalStorage() {
-            localStorage.setItem('sessions', JSON.stringify(sessions));
+        // Hämta session-id baserat på titel
+        function getSessionIdByTitle() {
+            return Object.keys(sessions).find(
+                key => sessions[key].title === document.getElementById("session-title").innerText
+            );
         }
 
+        // Visa tillfälle
         function showSession(sessionId) {
             const session = sessions[sessionId];
             document.getElementById("session-title").innerText = session.title;
-            document.getElementById("session-notes").value = session.notes || "";
-            updateSchedule(sessionId);
+
+            const scheduleList = document.getElementById("schedule-list");
+            scheduleList.innerHTML = session.schedule
+                .map(
+                    (item, index) =>
+                        `<li>
+                            <strong>${item.time}</strong>
+                            <textarea onchange="updateContent(${sessionId}, ${index}, this.value)">${item.content}</textarea>
+                        </li>`
+                )
+                .join("");
+
+            document.getElementById("session-notes").value = session.notes;
             document.getElementById("session-details").style.display = "block";
         }
 
-        function updateSchedule(sessionId) {
-            const scheduleList = document.getElementById("schedule-list");
-            scheduleList.innerHTML = "";
-            sessions[sessionId].schedule.forEach((item, index) => {
-                const li = document.createElement("li");
-                li.innerHTML = `
-                    <strong>${item.time}</strong>
-                    <textarea 
-                        class="content" 
-                        onchange="updateContent(${sessionId}, ${index}, this.value)"
-                    >${item.content}</textarea>
-                `;
-                scheduleList.appendChild(li);
-            });
-        }
-
+        // Uppdatera innehåll
         function updateContent(sessionId, index, value) {
             sessions[sessionId].schedule[index].content = value;
-            saveToLocalStorage();
         }
 
+        // Spara anteckningar
         function saveSession() {
-            const sessionId = document.getElementById("session-details").dataset.currentSessionId;
-            const updatedNotes = document.getElementById("session-notes").value;
-            sessions[sessionId].notes = updatedNotes;
-            saveToLocalStorage();
+            const sessionId = getSessionIdByTitle();
+            sessions[sessionId].notes = document.getElementById("session-notes").value;
             alert("Ändringar sparade!");
         }
 
-        function resetToDefault() {
-            if (confirm("Vill du verkligen återställa alla tillfällen till grundinställningarna?")) {
-                Object.keys(defaultSessions).forEach(sessionId => {
-                    sessions[sessionId] = JSON.parse(JSON.stringify(defaultSessions[sessionId]));
-                });
-                saveToLocalStorage();
-                alert("Alla tillfällen har återställts till grund.");
-                location.reload();
+        // Återställ till ursprung
+        function resetSession() {
+            if (confirm("Vill du verkligen återställa till ursprungligt innehåll?")) {
+                const sessionId = getSessionIdByTitle();
+                sessions[sessionId] = JSON.parse(JSON.stringify(defaultSessions[sessionId]));
+                showSession(sessionId); // Ladda om tillfället med ursprungliga data
+                alert("Tillfället har återställts till ursprungligt innehåll.");
             }
         }
-        
-
     </script>
 </body>
 </html>
