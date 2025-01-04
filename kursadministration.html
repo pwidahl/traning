@@ -5,61 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Anpassningar */
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        input, textarea, select, button {
-            font-size: 1rem;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            background: #e4dace;
-            color: #4a4a4a;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            background: #d8c9b9;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        #summary-output {
-            font-family: monospace;
-            white-space: pre-wrap;
-        }
-
-        /* Responsiv design */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            h1, h2 {
-                font-size: 1.5rem;
-            }
-
-            input, textarea, select, button {
-                font-size: 0.9rem;
-                padding: 8px;
-            }
-
-            #summary-output {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -108,6 +53,10 @@
         <!-- Sammanställning och analys -->
         <div>
             <h2>Sammanställning</h2>
+            <label for="summary-course-select">Välj kurs för sammanställning:</label>
+            <select id="summary-course-select">
+                <option value="all">Alla kurser</option>
+            </select>
             <button onclick="generateSummary()">Generera Sammanställning</button>
             <textarea id="summary-output" rows="10" readonly></textarea>
             <button onclick="exportSummary()">Exportera Sammanställning</button>
@@ -142,6 +91,7 @@
                     };
                     updateCourseList();
                     updateCourseSelect();
+                    updateSummaryCourseSelect();
                     document.getElementById("course-name").value = "";
                     document.getElementById("course-description").value = "";
                     document.getElementById("course-start-date").value = "";
@@ -172,6 +122,18 @@
                 option.value = courseName;
                 option.textContent = courseName;
                 courseSelect.appendChild(option);
+            }
+        }
+
+        // Uppdatera sammanställningsväljaren
+        function updateSummaryCourseSelect() {
+            const summaryCourseSelect = document.getElementById("summary-course-select");
+            summaryCourseSelect.innerHTML = '<option value="all">Alla kurser</option>';
+            for (const courseName in data.courses) {
+                const option = document.createElement("option");
+                option.value = courseName;
+                option.textContent = courseName;
+                summaryCourseSelect.appendChild(option);
             }
         }
 
@@ -213,22 +175,33 @@
 
         // Generera sammanställning
         function generateSummary() {
+            const summaryCourseSelect = document.getElementById("summary-course-select").value;
             const summaryOutput = document.getElementById("summary-output");
             let summaryText = "";
 
-            for (const courseName in data.courses) {
-                summaryText += `Kurs: ${courseName}\n`;
-                summaryText += `Beskrivning: ${data.courses[courseName].description}\n`;
-                summaryText += `Startdatum: ${data.courses[courseName].startDate}\n`;
-                summaryText += `Antal tillfällen: ${data.courses[courseName].sessions}\n`;
-                summaryText += `Deltagare:\n`;
-                data.courses[courseName].participants.forEach((participant) => {
-                    summaryText += `  - ${participant.name}: ${participant.progress}\n`;
-                });
-                summaryText += `\n`;
+            if (summaryCourseSelect === "all") {
+                for (const courseName in data.courses) {
+                    summaryText += generateCourseSummary(courseName);
+                }
+            } else {
+                summaryText += generateCourseSummary(summaryCourseSelect);
             }
 
             summaryOutput.value = summaryText.trim();
+        }
+
+        // Skapa sammanställning för en specifik kurs
+        function generateCourseSummary(courseName) {
+            let summaryText = `Kurs: ${courseName}\n`;
+            summaryText += `Beskrivning: ${data.courses[courseName].description}\n`;
+            summaryText += `Startdatum: ${data.courses[courseName].startDate}\n`;
+            summaryText += `Antal tillfällen: ${data.courses[courseName].sessions}\n`;
+            summaryText += `Deltagare:\n`;
+            data.courses[courseName].participants.forEach((participant) => {
+                summaryText += `  - ${participant.name}: ${participant.progress}\n`;
+            });
+            summaryText += `\n`;
+            return summaryText;
         }
 
         // Exportera sammanställning till en textfil
