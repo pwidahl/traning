@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kursadministration</title>
     <style>
-        /* Grundläggande layout */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -88,24 +87,6 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
-
-        .edit-button {
-            background: #ffc107;
-            color: white;
-        }
-
-        .edit-button:hover {
-            background: #e0a800;
-        }
-
-        .save-button {
-            background: #28a745;
-            color: white;
-        }
-
-        .save-button:hover {
-            background: #218838;
-        }
     </style>
 </head>
 <body>
@@ -155,17 +136,20 @@
     </div>
 
     <script>
+        // Ladda data från localStorage eller initiera tomma objekt
         let courses = JSON.parse(localStorage.getItem('courses')) || {};
         let participants = JSON.parse(localStorage.getItem('participants')) || {};
 
         let selectedCourse = "";
         let selectedParticipantIndex = null;
 
+        // Spara data till localStorage
         function saveToLocalStorage() {
             localStorage.setItem('courses', JSON.stringify(courses));
             localStorage.setItem('participants', JSON.stringify(participants));
         }
 
+        // Lägg till ny kurs
         function addCourse() {
             const courseName = document.getElementById('course-name').value.trim();
             if (!courseName) {
@@ -175,6 +159,7 @@
 
             if (!courses[courseName]) {
                 courses[courseName] = [];
+                participants[courseName] = [];
                 saveToLocalStorage();
                 renderCourses();
                 alert(`Kurs "${courseName}" skapades!`);
@@ -184,6 +169,7 @@
             document.getElementById('course-name').value = '';
         }
 
+        // Rendera kurslistan
         function renderCourses() {
             const courseSelect = document.getElementById('course-select');
             courseSelect.innerHTML = '<option value="">-- Välj en kurs --</option>';
@@ -195,6 +181,7 @@
             });
         }
 
+        // Lägg till ny deltagare
         function addParticipant() {
             selectedCourse = document.getElementById('course-select').value;
             const ownerName = document.getElementById('owner-name').value.trim();
@@ -209,7 +196,6 @@
                 return;
             }
 
-            participants[selectedCourse] = participants[selectedCourse] || [];
             participants[selectedCourse].push({ owner: ownerName, dog: dogName, notes: [] });
             saveToLocalStorage();
             renderParticipants();
@@ -218,6 +204,7 @@
             document.getElementById('dog-name').value = '';
         }
 
+        // Rendera deltagarlistan
         function renderParticipants() {
             const tableBody = document.getElementById('participant-table').querySelector('tbody');
             tableBody.innerHTML = '';
@@ -240,6 +227,7 @@
             });
         }
 
+        // Visa anteckningar för deltagare
         function viewNotes(index) {
             selectedParticipantIndex = index;
             const participant = participants[selectedCourse][index];
@@ -260,6 +248,7 @@
             });
         }
 
+        // Lägg till en ny anteckning
         function addNote() {
             const noteText = document.getElementById('new-note').value.trim();
             if (!noteText) {
@@ -274,11 +263,13 @@
             document.getElementById('new-note').value = '';
         }
 
+        // Uppdatera anteckning
         function updateNote(noteIndex, newText) {
             participants[selectedCourse][selectedParticipantIndex].notes[noteIndex].text = newText;
             saveToLocalStorage();
         }
 
+        // Ta bort deltagare
         function deleteParticipant(index) {
             participants[selectedCourse].splice(index, 1);
             saveToLocalStorage();
@@ -286,8 +277,8 @@
             document.getElementById('notes-section').style.display = 'none';
         }
 
+        // Initiera sidan
         document.getElementById('course-select').addEventListener('change', renderParticipants);
-
         renderCourses();
     </script>
 </body>
