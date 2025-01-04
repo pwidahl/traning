@@ -7,93 +7,175 @@ body {
     color: #5a5a5a; /* Mjuk grå textfärg */
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: flex-start;
     min-height: 100vh;
     text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* Container */
 .container {
-    width: 90%;
+    width: 100%;
     max-width: 600px;
-    background: #fffaf3; /* Krämvit bakgrund */
+    background: #ffffff; /* Vit bakgrund för huvudytan */
     border-radius: 10px;
-    padding: 25px 20px;
+    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-/* Rubrik */
-h1 {
-    font-size: 2.2rem;
-    margin-bottom: 15px;
+/* Rubriker */
+h1, h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
     color: #4a4a4a; /* Mörkare beige/grå ton */
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-top: 20px;
 }
 
 p {
     font-size: 1rem;
-    margin-bottom: 20px;
     color: #6a6a6a; /* Ljusare gråton */
+    margin-bottom: 20px;
 }
 
-/* Kursknappar */
-.course-links {
+/* Formulär och inputs */
+form {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.course-links a {
-    text-decoration: none;
+input, textarea, select, button {
     font-size: 1rem;
-    font-weight: bold;
-    padding: 10px 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    background: #e4dace; /* Mjuk beige knappfärg */
-    color: #4a4a4a;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
     width: 100%;
-    max-width: 180px;
-    text-align: center;
+    box-sizing: border-box;
 }
 
-.course-links a:hover {
-    background: #d8c9b9; /* Ljusare beige vid hover */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+textarea {
+    resize: vertical;
+    min-height: 50px;
 }
 
-/* Footer */
-footer {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #7a7a7a;
+button {
+    background: #e4dace; /* Mjuk beige */
+    color: #4a4a4a;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-footer a {
-    color: #6a6a6a;
+button:hover {
+    background: #d8c9b9; /* Mörkare beige */
+}
+
+button:active {
+    background: #cfc1ac; /* Ännu mörkare beige */
+}
+
+/* Listor */
+ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+}
+
+/* Textarea för sammanställning */
+#summary-output {
+    font-family: monospace;
+    white-space: pre-wrap;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    min-height: 100px;
+}
+
+/* Knappar och länkar */
+a {
     text-decoration: none;
+    color: #4a4a4a;
     font-weight: bold;
 }
 
-footer a:hover {
+a:hover {
     text-decoration: underline;
 }
 
 /* Responsiv design */
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
     h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
     }
 
     p {
         font-size: 0.9rem;
     }
 
-    .course-links a {
-        max-width: 100%;
-        padding: 10px;
+    input, textarea, select, button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 0.9rem;
+    }
+
+    ul li {
+        font-size: 0.9rem;
+    }
+
+    #summary-output {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    input, textarea, select, button {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+
+    button {
+        font-size: 0.8rem;
+    }
+
+    ul li {
+        font-size: 0.8rem;
+    }
+
+    #summary-output {
+        font-size: 0.8rem;
     }
 }
