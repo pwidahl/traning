@@ -3,44 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freestylekurser</title>
+    <title>Fortsättningskurs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+        }
+        h1, h2 {
             text-align: center;
         }
-        h1 {
-            margin-bottom: 20px;
+        .session-list {
+            margin: 20px 0;
+            text-align: center;
         }
-        .course-links {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-width: 400px;
-            margin: auto;
+        .session-content {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
         }
-        a {
-            display: inline-block;
-            text-decoration: none;
+        .hidden {
+            display: none;
+        }
+        button {
+            margin: 5px;
             padding: 10px;
             background-color: #007BFF;
             color: white;
+            border: none;
             border-radius: 5px;
-            font-size: 18px;
+            cursor: pointer;
         }
-        a:hover {
+        button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Välkommen till Freestylekurser</h1>
-    <p>Välj en kurs nedan:</p>
-    <div class="course-links">
-        <a href="nyborjarkurs.html">Nybörjarkurs</a>
-        <a href="fortsattningskurs.html">Fortsättningskurs</a>
-        <a href="avanceradkurs.html">Avancerad kurs</a>
+    <h1>Fortsättningskurs</h1>
+    <p>Klicka på ett tillfälle för att se detaljer:</p>
+    <div class="session-list">
+        <button onclick="showSession(1)">Tillfälle 1</button>
+        <button onclick="showSession(2)">Tillfälle 2</button>
+        <button onclick="showSession(3)">Tillfälle 3</button>
+        <button onclick="showSession(4)">Tillfälle 4</button>
+        <button onclick="showSession(5)">Tillfälle 5</button>
     </div>
+    <div id="session-content" class="session-content hidden"></div>
+
+    <script>
+        const courseData = {
+            1: {
+                title: "Tillfälle 1: Fördjupning av grundpositioner och flyt",
+                schedule: [
+                    "18.00–18.10: Uppvärmning",
+                    "18.10–18.30: Rörelse i positioner (höger/vänster sida i rörelse, bakom i rörelse)",
+                    "18.30–19.00: Nya trick: Cirkla runt föraren och backa runt föraren",
+                    "19.00–19.20: Teori: Fördjupning av shaping",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Träna rörelse i positioner och cirkla/backa runt föraren."
+            },
+            2: {
+                title: "Tillfälle 2: Kedjning av trick och positioner",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition",
+                    "18.10–18.40: Kedja trick och positioner: Mellan benen → Cirkla → Front → Snurra höger/vänster",
+                    "18.40–19.00: Nya trick: Korsa framtassarna och stå på bakbenen",
+                    "19.00–19.20: Teori: Kedjning och timing",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Träna på att kedja tre trick i följd."
+            },
+            3: {
+                title: "Tillfälle 3: Störningsträning och övergångar",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition",
+                    "18.10–18.30: Störningsträning med leksaker, publik eller rörelse",
+                    "18.30–19.00: Förbättra övergångar mellan trick och positioner",
+                    "19.00–19.20: Teori: Generalisering och störningsträning",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Träna trick och övergångar i olika miljöer."
+            },
+            4: {
+                title: "Tillfälle 4: Koreografi och programbygge",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition",
+                    "18.10–18.40: Sätt ihop längre sekvenser (5-6 trick i följd)",
+                    "18.40–19.00: Finjustera trick och öva med störningar",
+                    "19.00–19.20: Teori: Skapa koreografi med musik",
+                    "19.20–19.30: Avslutning och hemläxa"
+                ],
+                homework: "Sätt ihop en sekvens på 30-45 sekunder till musik."
+            },
+            5: {
+                title: "Tillfälle 5: Program och uppvisning",
+                schedule: [
+                    "18.00–18.10: Uppvärmning och repetition",
+                    "18.10–19.00: Varje ekipage visar sitt program",
+                    "19.00–19.20: Reflektion och feedback",
+                    "19.20–19.30: Avslutning och gruppfoto"
+                ],
+                homework: "Planera vidare träning och reflektera över kursen."
+            }
+        };
+
+        function showSession(sessionId) {
+            const session = courseData[sessionId];
+            const sessionContent = document.getElementById("session-content");
+            
+            sessionContent.innerHTML = `
+                <h2>${session.title}</h2>
+                <h3>Tidsplan:</h3>
+                <ul>
+                    ${session.schedule.map(item => `<li>${item}</li>`).join("")}
+                </ul>
+                <h3>Hemläxa:</h3>
+                <p>${session.homework}</p>
+            `;
+            sessionContent.classList.remove("hidden");
+        }
+    </script>
 </body>
 </html>
